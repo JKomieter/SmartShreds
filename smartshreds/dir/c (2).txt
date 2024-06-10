@@ -1,0 +1,3 @@
+[HashSimlarity { original_file_name: "istockphoto-1338972315-612x612.jpg", hashes: {"96e7c585b71d9a6bf84807d061df1d25e6123651080ad97123319e15722ef87e": ["dir/istockphoto-1338972315-612x612.jpg", "dir/sub_dir/istockphoto-1338972315-612x612.jpg"]} }, 
+HashSimlarity { original_file_name: "a.txt", hashes: {"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": ["dir/sub_dir/a (1).txt", "dir/sub_dir/a.txt", "dir/sub_dir/sub_sub_dir/a (3).txt"]} }, 
+HashSimlarity { original_file_name: "c.tsx", hashes: {"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": ["dir/c (3).tsx"], "21439d9cd67463b0064207df9c46d920561bdbf6c4822c0fab30e752c29d3347": ["dir/c.tsx"]} }]

@@ -6,7 +6,7 @@ use std::path::PathBuf;
 
 use super::error::SmartShredsError;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct DuplicateFile {
     pub file_name: String,
     pub file_paths: Vec<PathBuf>,
@@ -54,7 +54,6 @@ pub fn search_files_with_similar_names_in_dir(
                         .expect("Could not get duplucates")
                         .push(path.clone());
                 } else {
-                    println!("{}", file_name);
                     duplicates
                         .entry(original_file_name)
                         .or_insert_with(|| vec![path.clone()]);

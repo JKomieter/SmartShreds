@@ -4,8 +4,8 @@ use std::fs;
 use std::io::Read;
 use std::path::PathBuf;
 
-use super::dir_search::DuplicateFile;
-use super::error::SmartShredsError;
+use super::super::dir_search::DuplicateFile;
+use super::super::error::SmartShredsError;
 
 #[derive(Debug)]
 pub struct HashSimlarity {
@@ -23,7 +23,6 @@ pub fn hash_duplicate_file(duplicates: &Vec<DuplicateFile>) -> Result<Vec<HashSi
             hashes: HashMap::new()
         };
         for file_path in &duplicate.file_paths {
-            println!("Hashing file: {:?}", file_path);
             let mut file = fs::File::open(file_path)?;
             let mut contents = Vec::new();
             file.read_to_end(&mut contents)?;
