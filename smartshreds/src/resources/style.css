@@ -1,0 +1,25 @@
+#main-title {
+    font-size: 2em;
+    font-weight: bolder;
+}
+
+#box-row {
+    padding: 1em;
+}
+
+#label-row {
+    padding-left: 1em;
+    font-weight: 600;
+    font-size: 17px;
+}
+
+#header-row {
+    padding: 1.4em;
+    border-top: 1px solid rgb(113, 112, 112);
+    border-bottom: 1px solid rgb(113, 112, 112);
+}
+
+#header-title {
+    font-size: 16px;
+    font-weight: 700;
+}

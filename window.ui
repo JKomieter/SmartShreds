@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <template class="SmartShredsWindow" parent="AdwApplicationWindow">
+    <property name="title">SmartShreds</property>
+    <property name="width-request">900</property>
+    <property name="height-request">800</property>
+    <child>
+      <object class="AdwOverlaySplitView" id="split_view">
+        <property name="sidebar">
+            <object class="GtkListBox">
+                <property name="selection-mode">single</property>
+                <child>
+                    <object class="GtkListBoxRow">
+                        <property name="activatable">false</property>
+                        <property name="selectable">false</property>
+                        <property name="margin-top">20</property>
+                        <property name="margin-bottom">50</property>
+                        <child>
+                            <object class="GtkLabel">
+                                <property name="label" translatable="yes">SmartShreds</property>
+                                <property name="name">main-title</property>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBoxRow">
+                        <property name="selectable">true</property>
+                        <property name="activatable">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <property name="name">box-row</property>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="icon-name">document-open-symbolic</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Find duplicates</property>
+                                        <property name="name">label-row</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBoxRow">
+                        <property name="selectable">true</property>
+                        <property name="activatable">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <property name="name">box-row</property>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="icon-name">document-open-symbolic</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Smart organize</property>
+                                        <property name="name">label-row</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBoxRow">
+                        <property name="selectable">true</property>
+                        <property name="activatable">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <property name="name">box-row</property>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="icon-name">document-open-symbolic</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Shred files</property>
+                                        <property name="name">label-row</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+            </object>
+        </property>
+        <property name="content">
+            <object class="AdwNavigationView">
+                <child>
+                    <object class="AdwNavigationPage">
+                        <property name="title" translatable="yes">Find duplicates</property>
+                        <property name="child">
+                            <object class="AdwToolbarView">
+                                <child type="top">
+                                    <object class="AdwHeaderBar"/>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <style>
+                                            <class name="spacer"/>
+                                        </style>
+                                        <child>
+                                        <!-- Header -->
+                                            <object class="GtkCenterBox">
+                                                <property name="orientation">horizontal</property>
+                                                <property name="name">header-row</property>
+                                                <child type="start">
+                                                    <object class="GtkLabel">
+                                                        <property name="label" translatable="yes">Duplicate file detection</property>
+                                                        <property name="name">header-title</property>
+                                                    </object>
+                                                </child>
+                                                <child type="end">
+                                                    <object class="GtkBox">
+                                                        <property name="orientation">horizontal</property>
+                                                        <child>
+                                                            <object class="GtkEntry" id="entry">
+                                                                <property name="margin-end">10</property>
+                                                                <property name="placeholder-text" translatable="yes">Search files...</property>
+                                                            </object>
+                                                        </child>
+                                                        <child>
+                                                            <object class="GtkButton" id="dir_button">
+                                                                <property name="label" translatable="yes">Choose directory to scan</property>
+                                                            </object>
+                                                        </child>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        <!-- Header -->
+                                        </child>
+                                    </object>
+                                </child>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+                <child>
+                    <object class="AdwNavigationPage">
+                        <property name="title" translatable="yes">Smart organize</property>
+                    </object>
+                </child>
+            </object>
+        </property>
+      </object>
+    </child>
+  </template>
+</interface>
