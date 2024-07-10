@@ -15,11 +15,38 @@
 
 #header-row {
     padding: 1.4em;
-    border-top: 1px solid rgb(113, 112, 112);
-    border-bottom: 1px solid rgb(113, 112, 112);
+    border-top: 0.5px solid rgb(113, 112, 112);
+    border-bottom: 0.5px solid rgb(113, 112, 112);
 }
 
 #header-title {
     font-size: 16px;
     font-weight: 700;
 }
+
+#entry {
+    outline: none;
+    border: 0.5px solid rgb(113, 112, 112);
+    border-radius: 5px;
+    font-size: 17px;
+}
+#entry:hover {
+    border: 1px solid rgb(113, 112, 112);
+}
+
+#output-box {
+    padding: 1em;
+    border: 0.5px solid rgb(113, 112, 112);
+    border-radius: 5px;
+    font-size: 17px;
+}
+
+#table-head {
+    padding: 1em;
+    border-bottom: 0.5px solid rgb(113, 112, 112);
+}
+
+#file-row-center-box {
+    padding: 1em;
+}
+

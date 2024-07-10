@@ -39,6 +39,3 @@ User Interface: Develop a user-friendly interface for interacting with the tool.
 Testing and Documentation: Write comprehensive tests for your application and document all features thoroughly.
 
 This project would give you experience with a wide range of programming concepts, including file I/O, system calls, data analysis, user interface design, testing, and documentation. It would also be a useful tool that could help users understand and manage their file systems more effectively.
-
-Emulator
-dup_files
