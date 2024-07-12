@@ -26,7 +26,7 @@ impl DupFileRow {
 
     pub fn bind(&self, dup_file_object: &DupFileObject) {
         let file_name = self.imp().filename.get();
-        let file_size = self.imp().filesize.get();
+        // let file_size = self.imp().filesize.get();
         let file_path = self.imp().filepath.get();
         let mut bindings = self.imp().bindings.borrow_mut();
 
@@ -36,11 +36,11 @@ impl DupFileRow {
             .bidirectional()
             .sync_create()
             .build();
-        let file_size_binding = dup_file_object
-            .bind_property("filesize", &file_size, "label")
-            .bidirectional()
-            .sync_create()
-            .build();
+        // let file_size_binding = dup_file_object
+        //     .bind_property("filesize", &file_size, "label")
+        //     .bidirectional()
+        //     .sync_create()
+        //     .build();
         let file_path_binding = dup_file_object
             .bind_property("filepath", &file_path, "label")
             .bidirectional()
@@ -48,7 +48,7 @@ impl DupFileRow {
             .build();
 
         bindings.push(file_name_binding);
-        bindings.push(file_size_binding);
+        // bindings.push(file_size_binding);
         bindings.push(file_path_binding);
     }
 

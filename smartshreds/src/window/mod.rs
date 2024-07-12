@@ -7,7 +7,7 @@ use std::path::PathBuf;
 use sha2::{Digest, Sha256};
 use adw::{prelude::*, AlertDialog, ResponseAppearance};
 use gtk::gio::Cancellable;
-use gtk::{gio, glib, FileDialog, ListBoxRow, Spinner};
+use gtk::{gio, glib, FileDialog, Label, ListBoxRow, Spinner};
 use glib::clone;
 use glib::Object;
 use adw::subclass::prelude::*;
@@ -35,15 +35,16 @@ impl SmartShredsWindow {
         file_dialog.select_folder(
             Some(self), 
             Some(&Cancellable::new()), 
-            clone!(@weak self as window => move |folder| {
-                let folder_name = folder.expect("No folder selected");
-                let path = folder_name.path().expect("No path found");
-                let number_of_files = utils::number_of_dir_files(&path).expect("Error counting files");
-                glib::spawn_future_local(
-                    clone!(@weak window as window => async move {
-                        window.scan_progress(&path, number_of_files).await;  
-                    })
-                );
+            clone!(@weak self as window => @default-panic, move |folder| {
+                if let Ok(folder_name) = folder {
+                    let path = folder_name.path().expect("No path found");
+                    let number_of_files = utils::number_of_dir_files(&path).expect("Error counting files");
+                    glib::spawn_future_local(
+                        clone!(@weak window as window => async move {
+                            window.scan_progress(&path, number_of_files).await;  
+                        })
+                    );
+                }
             })
         );
     }
@@ -78,7 +79,7 @@ impl SmartShredsWindow {
             let mut dir_queue: Vec<PathBuf> = vec![path.to_path_buf()];
             let mut duplicates_map: HashMap<String, Vec<DupFile>> = HashMap::new();
             let mut hasher = Sha256::new();
-
+            // scan the directory
             while let Some(dir) = dir_queue.pop() {
                 for entry in std::fs::read_dir(&dir).expect("Error reading directory") {
                     let entry = entry.expect("Error reading entry");
@@ -102,20 +103,21 @@ impl SmartShredsWindow {
                     }
                 }
             }
-
-            let mut duplicates: Vec<Vec<DupFile>> = Vec::new();
-            for (_, files) in duplicates_map {
-                if files.len() > 1 {
-                    duplicates.push(files);
-                }
-            }
+            // put a check to see if there are any duplicates
             
-            self.imp().duplicates_vec.replace(duplicates);
+            self.imp().duplicates_vec.replace(
+                duplicates_map
+                .values()
+                .filter(|files| files.len() > 1)
+                .map(|files| files.clone())
+                .collect()
+            );
             self.imp().page_number.set(1);
             self.present_duplicates();
         }
     }
 
+    /// Present the duplicate files in the listbox.
     fn present_duplicates(&self) {
         self.imp().listbox.remove_all();
         let page_number = if self.imp().page_number.get() == self.imp().duplicates_vec.borrow().len() {
@@ -125,14 +127,23 @@ impl SmartShredsWindow {
         };
         println!("The current page number is: {}", page_number);
         let duplicate_vec = &self.get_duplicates()[page_number - 1];
-        self.imp().pagination.set_label(&format!("{}/{}", page_number, self.imp().duplicates_vec.borrow().len()));
-        
-        for dup_file in duplicate_vec {
-            let list_row_row = self.create_dup_row(dup_file);
-            self.imp().listbox.prepend(&list_row_row);
+        self.imp().pagination.set_label(&format!("{} of {}", page_number, self.imp().duplicates_vec.borrow().len()));
+      
+        duplicate_vec.iter().for_each(|dup_file| {
+            let row = self.create_dup_row(dup_file);
+            let tooltip_markup = utils::row_tooltip_markup(&dup_file.file_path.to_string_lossy());
+            row.set_tooltip_text(Some(&tooltip_markup));
+            self.imp().listbox.append(&row);
+        });
+        if duplicate_vec.len() > 0 {
+            let filesize = &format!("FILE SIZE: {}", utils::format_size(duplicate_vec[0].file_size));
+            self.imp().filesize.set_label(filesize);
         }
+
     }
 
+    /// Create a listbox row for the duplicate
+    #[inline]
     fn create_dup_row(&self, dup_file: &DupFile) -> ListBoxRow {
         let filesize = utils::format_size(dup_file.file_size);
         let dup_file_object = DupFileObject::new(
@@ -144,6 +155,42 @@ impl SmartShredsWindow {
         let dup_file_row = DupFileRow::new();
         dup_file_row.bind(&dup_file_object);
         dup_file_row.upcast()
+    }
+
+    /// Delete the selected duplicate files.
+    /// ⛔️ This function is dangerous as it deletes files from the disk. ⛔️
+    async fn delete_duplicates(&self) {
+        let delete_response = "delete";
+        let cancel_response = "cancel";
+        let message = Label::builder()
+            .label("Are you sure you want to delete the selected files?")
+            .css_classes(*&["warning", "title-4"])
+            .build();
+        let dialog = AlertDialog::builder()
+            .heading("Confirm deletion")
+            .extra_child(&message)
+            .close_response(delete_response)
+            .default_response(cancel_response)
+            .build();
+        dialog
+            .add_responses(&[(delete_response, "Delete"), (cancel_response, "Cancel")]);
+        dialog.set_response_appearance(&delete_response, ResponseAppearance::Destructive);
+        dialog.set_response_appearance(&cancel_response, ResponseAppearance::Suggested);
+
+        // get the response from the dialog
+        let response = dialog.choose_future(self).await;
+
+        if response == cancel_response {
+            return;
+        } else if response == delete_response {
+            self.imp().listbox.selected_rows().iter().for_each(|row| {
+                let dup_file_row = row.downcast_ref::<DupFileRow>().expect("Error getting row");
+                let binding = dup_file_row.imp().filepath.label();
+                let file_path = binding.as_str();
+                std::fs::remove_file(file_path).expect("Error deleting file");
+                self.imp().listbox.remove(row);
+            });
+        }
     }
 }
 

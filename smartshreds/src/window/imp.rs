@@ -1,6 +1,6 @@
 
 use std::cell::{Cell, RefCell};
-use gtk::{self, glib::{self, subclass::InitializingObject}, Button, CompositeTemplate, ListBox };
+use gtk::{self, glib::{self, clone, subclass::InitializingObject}, Button, CompositeTemplate, Label, ListBox };
 use adw::subclass::prelude::*;
 
 use crate::types::DupFile;
@@ -14,7 +14,9 @@ pub struct SmartShredsWindow {
     pub duplicates_vec: RefCell<Vec<Vec<DupFile>>>,
     pub page_number: Cell<usize>,
     #[template_child]
-    pub pagination: TemplateChild<Button>
+    pub pagination: TemplateChild<Label>,
+    #[template_child]
+    pub filesize: TemplateChild<Label>
 }
 
 #[glib::object_subclass]
@@ -45,23 +47,33 @@ impl ObjectImpl for SmartShredsWindow {
 
 #[gtk::template_callbacks]
 impl SmartShredsWindow {
+    // the behaviour of the buttons in the pagination is weird here.
     #[template_callback]
-    fn handle_next_button_clicked(&self, _button: &Button) {
-        if self.page_number.get() > self.duplicates_vec.borrow().len() {
-            return;
+    fn on_next_clicked(&self, _button: &Button) {
+        if self.page_number.get() < self.duplicates_vec.borrow().len() && self.duplicates_vec.borrow().len() > 0 {
+            self.page_number.set(self.page_number.get() + 1);
+            self.obj().present_duplicates();
         }
-        self.page_number.set(self.page_number.get() + 1);
-        self.obj().present_duplicates();
     }
 
     #[template_callback]
-    fn handle_prev_button_clicked(&self, _button: &Button) {
-        if self.page_number.get() == 1 {
-            return;
+    fn on_previous_clicked(&self, _button: &Button) {
+        if self.page_number.get() > 1 && self.duplicates_vec.borrow().len() > 0 {
+            self.page_number.set(self.page_number.get() - 1);
+            self.obj().present_duplicates();
         }
-        self.page_number.set(self.page_number.get() - 1);
-        self.obj().present_duplicates();
-    
+    }
+
+    /// Delete the selected duplicate files.
+    #[template_callback]
+    fn on_delete_clicked(&self, _button: &Button) {
+        if self.duplicates_vec.borrow().len() > 0 {
+            glib::spawn_future_local(
+                clone!(@weak self as window => async move {
+                    window.obj().delete_duplicates().await;
+                })
+            );
+        }
     }
 }
 

@@ -2,6 +2,7 @@
 <interface>
   <template class="DupFileRow" parent="GtkListBoxRow">
     <property name="name">file-row-center-box</property>
+    <property name="focusable">true</property>
     <child>
         <object class="GtkCenterBox">
             <property name="orientation">horizontal</property>
