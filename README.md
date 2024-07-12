@@ -1,41 +1,73 @@
 # SmartShreds
-Make your file duplication detector with semantic similarity analysis:
 
-# Description: 
-This is a Rust-based file duplicate detector with a twist! It goes beyond identifying identical files and analyzes their semantic similarity to find content with similar meaning but potentially different wording.
+SmartShreds is a Rust-based file duplicate detector with a twist! It goes beyond identifying identical files and analyzes their semantic similarity to find content with similar meaning but potentially different wording.
 
-# Key Features:
+## Key Features
 
-* Content-based duplicate detection using hashing algorithms.
-* Semantic similarity analysis using Natural Language Processing (NLP) libraries.
-* Actionable suggestions:
-    - Merge files with highly similar content.
-    - Repurpose content for a different format based on semantic analysis.
-    - Highlight key differences between similar files.
+- **Content-based Duplicate Detection**: Uses hashing algorithms to detect duplicates.
+- **Semantic Similarity Analysis**: Utilizes Natural Language Processing (NLP) libraries for content analysis.
+- **Actionable Suggestions**:
+  - Merge files with highly similar content.
+  - Repurpose content for different formats based on semantic analysis.
+  - Highlight key differences between similar files.
 
-# Benefits:
+## Benefits
 
-Saves storage space by eliminating unnecessary duplicates.
-Improves information management by finding conceptually similar content.
-Identifies opportunities to repurpose existing content for new uses.
+- **Storage Optimization**: Saves storage space by eliminating unnecessary duplicates.
+- **Enhanced Information Management**: Finds conceptually similar content for better organization.
+- **Content Repurposing**: Identifies opportunities to reuse existing content in new ways.
+- **AI-Powered Management**: Uses AI to help you manage and organize your files, boosting storage efficiency.
+
+## Technologies
+- GTK4
+- Rust
+
+## Media
+
+<video width="600" controls>
+  <source src="media/smartshreds_video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 
-Duplicate File Finder: Continue with your current functionality of finding duplicate files. You can enhance this by not just comparing file sizes, but also comparing file contents to ensure they are truly duplicates.
 
-File Type Analyzer: Add functionality to analyze and categorize files based on their type. For example, you can categorize files into images, videos, documents, etc.
+## Installation
 
-Storage Analyzer: Analyze how storage is being used. For example, calculate what percentage of storage is being used by each file type.
+```bash
+# Clone the repository
+git clone https://github.com/JKomieter/SmartShreds.git
 
-File History Tracker: Track changes to files over time. This could include when files are created, modified, or deleted.
+# Navigate to the project directory
+cd SmartShreds
 
-File Recovery: Implement a feature to recover deleted files, if possible.
+# Build the project
+cargo build --release
+```
 
-File Compression: Add a feature to compress rarely used files to save storage space.
+## Usage
 
-File Encryption: Add a feature to encrypt sensitive files for security.
+```bash
+# Run the application
+cargo run --release
 
-User Interface: Develop a user-friendly interface for interacting with the tool. This could be a command-line interface, a web interface, or a desktop application.
+```
 
-Testing and Documentation: Write comprehensive tests for your application and document all features thoroughly.
+## Contributing
 
-This project would give you experience with a wide range of programming concepts, including file I/O, system calls, data analysis, user interface design, testing, and documentation. It would also be a useful tool that could help users understand and manage their file systems more effectively.
+Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+
+## Additional Features (Future Enhancements)
+
+- **Duplicate File Finder**: Continue with the current functionality of finding duplicate files, enhanced by comparing file contents to ensure they are truly duplicates.
+- **File Type Analyzer**: Add functionality to analyze and categorize files based on their type (e.g., images, videos, documents).
+- **Storage Analyzer**: Analyze storage usage, calculating the percentage used by each file type.
+- **File History Tracker**: Track changes to files over time, including creation, modification, and deletion.
+- **File Recovery**: Implement a feature to recover deleted files, if possible.
+- **File Compression**: Add a feature to compress rarely used files to save storage space.
+- **File Encryption**: Add a feature to encrypt sensitive files for security.
+- **User Interface**: Develop a user-friendly interface for interacting with the tool, whether a command-line interface, a web interface, or a desktop application.
+- **Testing and Documentation**: Write comprehensive tests for the application and document all features thoroughly.

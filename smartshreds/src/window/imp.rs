@@ -16,7 +16,9 @@ pub struct SmartShredsWindow {
     #[template_child]
     pub pagination: TemplateChild<Label>,
     #[template_child]
-    pub filesize: TemplateChild<Label>
+    pub filesize: TemplateChild<Label>,
+    #[template_child]
+    pub toastoverlay: TemplateChild<adw::ToastOverlay>,
 }
 
 #[glib::object_subclass]

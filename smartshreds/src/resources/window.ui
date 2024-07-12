@@ -118,6 +118,8 @@
             </object>
         </property>
         <property name="content">
+            <object class="AdwToastOverlay" id="toastoverlay">
+                <child>
             <object class="AdwNavigationView">
                 <child>
                     <object class="AdwNavigationPage">
@@ -373,6 +375,8 @@
                 </child>
                 <!-- End -->
             </object>
+        </child>
+        </object>
         </property>
       </object>
     </child>

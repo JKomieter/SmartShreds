@@ -5,7 +5,7 @@ use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
 use sha2::{Digest, Sha256};
-use adw::{prelude::*, AlertDialog, ResponseAppearance};
+use adw::{prelude::*, AlertDialog, ResponseAppearance, Toast, };
 use gtk::gio::Cancellable;
 use gtk::{gio, glib, FileDialog, Label, ListBoxRow, Spinner};
 use glib::clone;
@@ -158,13 +158,13 @@ impl SmartShredsWindow {
     }
 
     /// Delete the selected duplicate files.
-    /// ⛔️ This function is dangerous as it deletes files from the disk. ⛔️
+    /// ⛔️ This function is dangerous as it completely deletes files from the disk. ⛔️
     async fn delete_duplicates(&self) {
         let delete_response = "delete";
         let cancel_response = "cancel";
         let message = Label::builder()
             .label("Are you sure you want to delete the selected files?")
-            .css_classes(*&["warning", "title-4"])
+            .css_classes(*&["warning", "title-2"])
             .build();
         let dialog = AlertDialog::builder()
             .heading("Confirm deletion")
@@ -190,6 +190,14 @@ impl SmartShredsWindow {
                 std::fs::remove_file(file_path).expect("Error deleting file");
                 self.imp().listbox.remove(row);
             });
+
+            self.imp().duplicates_vec.borrow_mut().retain(|files| files.len() > 1);
+            let toast = Toast::builder()
+                .timeout(3000)
+                .title("Files deleted successfully")
+                .build();
+            self.imp().toastoverlay.add_toast(toast);
+            self.present_duplicates();
         }
     }
 }
