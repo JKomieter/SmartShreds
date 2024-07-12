@@ -22,13 +22,10 @@ SmartShreds is a Rust-based file duplicate detector with a twist! It goes beyond
 - GTK4
 - Rust
 
+
 ## Media
 
-<video width="600" controls>
-  <source src="media/smartshreds_video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
+https://github.com/user-attachments/assets/c697caa5-b5f0-4227-b453-70092e320b78
 
 
 ## Installation
