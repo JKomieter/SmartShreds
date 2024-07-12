@@ -35,7 +35,7 @@ https://github.com/user-attachments/assets/c697caa5-b5f0-4227-b453-70092e320b78
 git clone https://github.com/JKomieter/SmartShreds.git
 
 # Navigate to the project directory
-cd SmartShreds
+cd smartshreds
 
 # Build the project
 cargo build --release
