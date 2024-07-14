@@ -120,10 +120,30 @@
         <property name="content">
             <object class="AdwToastOverlay" id="toastoverlay">
                 <child>
-            <object class="AdwNavigationView">
+            <object class="AdwNavigationView" id="navigationview">
+                <!-- Home Page -->
+                <!-- <child>
+                    <object class="AdwNavigationPage">
+                        <property name="title" translatable="yes">Home</property>
+                        <property name="tag">home</property>
+                        <property name="child">
+                            <object class="AdwToolbarView">
+                                <child type="top">
+                                    <object class="AdwHeaderBar"/>
+                                </child>
+                                <child>
+
+                                </child>
+                            </object>
+                        </property>
+                    </object>
+                </child> -->
+                <!-- Home Page -->
+                <!-- Find Duplicates Page-->
                 <child>
                     <object class="AdwNavigationPage">
                         <property name="title" translatable="yes">Find duplicates</property>
+                        <property name="tag">find-duplicates</property>
                         <property name="child">
                             <object class="AdwToolbarView">
                                 <child type="top">
@@ -305,7 +325,7 @@
                                                         <property name="name">table-head</property>
                                                         <child type="start">
                                                             <object class="GtkLabel">
-                                                                <property name="label" translatable="yes">LOCAL PATH</property>
+                                                                <property name="label" translatable="yes">FILE NAME</property>
                                                                 <style>
                                                                     <class name="monospace"/>
                                                                 </style>
@@ -313,7 +333,7 @@
                                                         </child>
                                                         <child type="end">
                                                             <object class="GtkLabel">
-                                                                <property name="label" translatable="yes">PERMISSIONS</property>
+                                                                <property name="label" translatable="yes">FILE LOCATION</property>
                                                                 <style>
                                                                     <class name="monospace"/>
                                                                 </style>

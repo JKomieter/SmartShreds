@@ -8,6 +8,8 @@ use crate::types::DupFile;
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/gtk_rs/SmartShreds/window.ui")]
 pub struct SmartShredsWindow {
+    #[template_child]
+    pub navigationview: TemplateChild<adw::NavigationView>,
     // First page showing he duplicate files.
     #[template_child]
     pub listbox: TemplateChild<ListBox>,

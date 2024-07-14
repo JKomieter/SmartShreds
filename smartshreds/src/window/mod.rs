@@ -90,8 +90,13 @@ impl SmartShredsWindow {
                         let mut file = File::open(&path).expect("Error opening file");
                         let dup_file = DupFile {
                             file_path: path.clone(),
-                            file_name: path.file_name().expect("Error getting file name").to_string_lossy().to_string(),
-                            file_size: file.metadata().expect("Error getting metadata").len(),
+                            file_name: path.file_name()
+                                .expect("Error getting file name")
+                                .to_string_lossy()
+                                .to_string(),
+                            file_size: file.metadata()
+                                .expect("Error getting metadata")
+                                .len(),
                         };
                         let mut contents = Vec::new();
                         file.read_to_end(&mut contents).expect("Error reading file");
@@ -190,8 +195,9 @@ impl SmartShredsWindow {
                 std::fs::remove_file(file_path).expect("Error deleting file");
                 self.imp().listbox.remove(row);
             });
-
+            // get rid of duplicates with only one file
             self.imp().duplicates_vec.borrow_mut().retain(|files| files.len() > 1);
+            
             let toast = Toast::builder()
                 .timeout(3000)
                 .title("Files deleted successfully")
