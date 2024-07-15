@@ -6,6 +6,7 @@ mod dup_file_row;
 mod dup_file_object;
 mod storage_analysis;
 
+
 use gtk::{gdk::Display, gio, glib, CssProvider};
 use adw::prelude::*;
 use window::SmartShredsWindow;

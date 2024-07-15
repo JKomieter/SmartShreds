@@ -68,3 +68,23 @@ pub fn row_tooltip_markup(file_path: &str) -> String {
     )
 }
 
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test]
+    fn test_format_size() {
+        assert_eq!(format_size(1024), "1.00 KB");
+        assert_eq!(format_size(1048576), "1.00 MB");
+        assert_eq!(format_size(1073741824), "1.00 GB");
+    }
+
+    #[test]
+    fn test_row_tooltip_markup() {
+        let file_path = "test_dir/a.txt";
+        let metadata = fs::metadata(file_path).expect("Error getting file metadata");
+
+        assert!(row_tooltip_markup(file_path).contains(&metadata.len().to_string()));
+    }
+
+}

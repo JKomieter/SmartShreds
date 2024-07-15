@@ -1,15 +1,15 @@
 
 use std::cell::{Cell, RefCell};
-use gtk::{self, glib::{self, clone, subclass::InitializingObject}, Button, CompositeTemplate, Label, ListBox };
+use gtk::{self, glib::{self, clone, subclass::InitializingObject}, 
+    Button, CompositeTemplate, Label, ListBox, ListBoxRow};
 use adw::subclass::prelude::*;
+use adw::prelude::*;
 
 use crate::types::DupFile;
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/gtk_rs/SmartShreds/window.ui")]
 pub struct SmartShredsWindow {
-    #[template_child]
-    pub navigationview: TemplateChild<adw::NavigationView>,
     // First page showing he duplicate files.
     #[template_child]
     pub listbox: TemplateChild<ListBox>,
@@ -21,6 +21,9 @@ pub struct SmartShredsWindow {
     pub filesize: TemplateChild<Label>,
     #[template_child]
     pub toastoverlay: TemplateChild<adw::ToastOverlay>,
+
+    #[template_child]
+    pub navigationview: TemplateChild<adw::NavigationView>,
 }
 
 #[glib::object_subclass]
@@ -78,6 +81,20 @@ impl SmartShredsWindow {
                 })
             );
         }
+    }
+
+    /// The navigation row is clicked.
+    #[template_callback]
+    fn on_navrow_activated(&self, listboxrow: &ListBoxRow) {
+        let index = listboxrow.index();
+        // match the index of the row selected to the navigation page tag.
+        println!("The index of the row is: {}", index);
+        let tag = match index {
+            1 => "home",
+            2 => "find-duplicates",
+            _ => "home",
+        };
+        self.navigationview.push_by_tag(tag);
     }
 }
 

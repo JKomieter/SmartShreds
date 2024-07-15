@@ -9,6 +9,7 @@
         <property name="sidebar">
             <object class="GtkListBox">
                 <property name="selection-mode">single</property>
+                <signal name="row-selected" handler="on_navrow_activated" swapped="true"/>
                 <child>
                     <object class="GtkListBoxRow">
                         <property name="activatable">false</property>
@@ -24,7 +25,7 @@
                     </object>
                 </child>
                 <child>
-                    <object class="GtkListBoxRow">
+                    <object class="GtkListBoxRow" id="home">
                         <property name="selectable">true</property>
                         <property name="activatable">true</property>
                         <child>
@@ -47,7 +48,7 @@
                     </object>
                 </child>
                 <child>
-                    <object class="GtkListBoxRow">
+                    <object class="GtkListBoxRow" id="find-duplicates">
                         <property name="selectable">true</property>
                         <property name="activatable">true</property>
                         <child>
@@ -122,7 +123,7 @@
                 <child>
             <object class="AdwNavigationView" id="navigationview">
                 <!-- Home Page -->
-                <!-- <child>
+                <child>
                     <object class="AdwNavigationPage">
                         <property name="title" translatable="yes">Home</property>
                         <property name="tag">home</property>
@@ -137,7 +138,7 @@
                             </object>
                         </property>
                     </object>
-                </child> -->
+                </child>
                 <!-- Home Page -->
                 <!-- Find Duplicates Page-->
                 <child>
