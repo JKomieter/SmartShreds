@@ -4,7 +4,7 @@
 
 SmartShreds is a Rust-based desktop application that enhances file management by detecting duplicate files through content and semantic similarity analysis. It uses hashing algorithms and NLP libraries to suggest merging, repurposing, and highlighting differences between similar files. Aimed at optimizing storage and improving content organization with AI-powered tools, SmartShreds is a sophisticated solution for managing digital clutter.
 
-## Key Features
+## Future Key Features
 
 - **Content-based Duplicate Detection**: Uses hashing algorithms to detect duplicates.
 - **Semantic Similarity Analysis**: Utilizes Natural Language Processing (NLP) libraries for content analysis.
