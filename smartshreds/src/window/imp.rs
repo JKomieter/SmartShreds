@@ -72,7 +72,7 @@ impl SmartShredsWindow {
     fn on_delete_clicked(&self, _button: &Button) {
         if self.duplicates_vec.borrow().len() > 0 {
             glib::spawn_future_local(
-                clone!(@weak self as window => async move {
+                clone!(#[weak(rename_to = window)] self, async move {
                     window.obj().delete_duplicates().await;
                 })
             );

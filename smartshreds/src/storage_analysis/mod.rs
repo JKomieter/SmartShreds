@@ -153,7 +153,7 @@ impl StorageAnalysis {
         }
     }
 
-    fn detect_junk_files(&mut self, path: &PathBuf, file_type: &FileType) {
+    fn detect_junk_files(&mut self, path: &PathBuf, _file_type: &FileType) {
         if path.extension().and_then(std::ffi::OsStr::to_str) == Some("log") {
             self.junk_files.push(JunkFiles::Logs);
         }

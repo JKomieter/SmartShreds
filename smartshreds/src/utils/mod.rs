@@ -1,26 +1,10 @@
-use crate::errors::SmartShredsError;
 use chrono::prelude::*;
 use std::fs;
-use std::{path::PathBuf, rc::Rc};
+use std::rc::Rc;
 
-/// get the number of files in a directory
-pub fn number_of_dir_files(path: &PathBuf) -> Result<u64, SmartShredsError> {
-    let mut dir_queue: Vec<PathBuf> = vec![path.to_path_buf()];
-    let mut file_count = 0;
-
-    while let Some(entry) = dir_queue.pop() {
-        if entry.is_dir() {
-            dir_queue.push(entry.to_path_buf());
-        } else {
-            file_count += 1;
-        }
-    }
-
-    Ok(file_count)
-}
 
 /// Get the size of a file
-// #[inline]
+#[inline]
 pub fn format_size(size: u64) -> String {
     if size < 1024 {
         format!("{} B", size)

@@ -35,13 +35,12 @@ impl SmartShredsWindow {
         file_dialog.select_folder(
             Some(self), 
             Some(&Cancellable::new()), 
-            clone!(@weak self as window => @default-panic, move |folder| {
+            clone!(#[weak(rename_to = window)] self, move |folder| {
                 if let Ok(folder_name) = folder {
                     let path = folder_name.path().expect("No path found");
-                    let number_of_files = utils::number_of_dir_files(&path).expect("Error counting files");
                     glib::spawn_future_local(
-                        clone!(@weak window as window => async move {
-                            window.scan_progress(&path, number_of_files).await;  
+                        clone!(#[weak] window, async move {
+                            window.scan_progress(&path).await;  
                         })
                     );
                 }
@@ -54,7 +53,7 @@ impl SmartShredsWindow {
     }
 
     /// Show alert dialog waiting for the scan to complete.
-    async fn scan_progress(&self, path: &PathBuf, _number_of_files: u64) {
+    async fn scan_progress(&self, path: &PathBuf) {
         let spinner = Spinner::builder().spinning(false).tooltip_text("Scanning...").build();
         
         let cancel_response = "cancel";
