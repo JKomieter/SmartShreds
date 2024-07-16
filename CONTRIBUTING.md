@@ -50,7 +50,7 @@ To contribute to SmartShreds, follow these steps:
 
 ## License
 
-By contributing to SmartShreds, you agree that your contributions will be licensed under the [MIT License](LICENSE).
+By contributing to SmartShreds, you agree that your contributions will be licensed under the [Apache License](LICENSE).
 
 ## Acknowledgements
 
