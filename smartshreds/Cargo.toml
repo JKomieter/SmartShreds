@@ -12,6 +12,10 @@ walkdir = "2.5.0"
 sha2 = "0.10.8"
 chrono = "0.4.38"
 sysinfo = "0.30.13"
+plotters = "0.3.3"
 
 [build-dependencies]
 glib-build-tools = "0.19.0"
+
+[profile.dev]
+opt-level = 1

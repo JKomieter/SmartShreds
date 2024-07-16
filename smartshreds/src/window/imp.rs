@@ -35,10 +35,6 @@ impl ObjectSubclass for SmartShredsWindow {
     fn class_init(klass: &mut Self::Class) {
         klass.bind_template();
         klass.bind_template_callbacks();
-        // Action to scan a chosen directory.
-        klass.install_action_async("start-scan", None, |window, _, _| async move {
-            window.select_folder_to_scan().await;
-        });
     }
 
     fn instance_init(obj: &InitializingObject<Self>) {
@@ -88,14 +84,21 @@ impl SmartShredsWindow {
     fn on_navrow_activated(&self, listboxrow: &ListBoxRow) {
         let index = listboxrow.index();
         // match the index of the row selected to the navigation page tag.
-        println!("The index of the row is: {}", index);
         let tag = match index {
             1 => "home",
             2 => "find-duplicates",
             _ => "home",
         };
+        self.navigationview.pop();
         self.navigationview.push_by_tag(tag);
     }
+
+    /// The scan button is clicked.
+    #[template_callback]
+    async fn on_select_directory_clicked(&self, _button: &Button) {
+        self.obj().select_folder_to_scan().await;
+    }
+
 }
 
 impl WidgetImpl for SmartShredsWindow {}

@@ -60,7 +60,7 @@ impl SmartShredsWindow {
         let cancel_response = "cancel";
         let start_response = "start";
         let dialog = AlertDialog::builder()
-            .heading("Scanning in progress")
+            .heading("Press start to scan")
             .extra_child(&spinner)
             .close_response(cancel_response)
             .default_response(start_response)
@@ -148,7 +148,7 @@ impl SmartShredsWindow {
     }
 
     /// Create a listbox row for the duplicate
-    #[inline]
+    // #[inline]
     fn create_dup_row(&self, dup_file: &DupFile) -> ListBoxRow {
         let filesize = utils::format_size(dup_file.file_size);
         let dup_file_object = DupFileObject::new(

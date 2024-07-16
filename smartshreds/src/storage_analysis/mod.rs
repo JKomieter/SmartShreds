@@ -18,7 +18,6 @@ pub struct StorageAnalysis {
 #[derive(Debug, Clone, Default)]
 pub struct MemoryUsage {
     pub size: u64,
-    pub total_files: u64,
     pub total_folders: u64,
 }
 
@@ -113,7 +112,6 @@ impl StorageAnalysis {
                     self.memory_usage.total_folders += 1;
                     self.traverse_directory(&path);
                 } else {
-                    self.memory_usage.total_files += 1;
                     self.total_number_of_files += 1;
                     self.process_file(&path, &mut file_types_map);
                 }
@@ -160,5 +158,18 @@ impl StorageAnalysis {
             self.junk_files.push(JunkFiles::Logs);
         }
         // Add more conditions for other junk file types as needed
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    #[test] 
+    pub fn test_storage_analysis() {
+        let path = PathBuf::from("test_dir");
+        let analysis = StorageAnalysis::analyse(&path);
+        assert!(analysis.total_number_of_files > 0);
+        assert!(analysis.memory_usage.size > 0);
     }
 }

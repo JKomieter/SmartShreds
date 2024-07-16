@@ -181,7 +181,7 @@
                                                         <child>
                                                             <object class="GtkButton">
                                                                 <property name="label" translatable="yes">Select directory</property>
-                                                                <property name="action-name">start-scan</property>
+                                                                <signal name="clicked" handler="on_select_directory_clicked" swapped="true"/>
                                                                 <style>
                                                                     <class name="accent"/>
                                                                 </style>
