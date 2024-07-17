@@ -3,7 +3,7 @@ mod imp;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 use sha2::{Digest, Sha256};
 use adw::{prelude::*, AlertDialog, ResponseAppearance, Toast, };
 use gtk::gio::Cancellable;
@@ -16,8 +16,9 @@ use crate::dup_file_object::DupFileObject;
 use crate::dup_file_row::DupFileRow;
 use crate::file_type_box::FileTypeBox;
 use crate::storage_analysis_plot::analysis::StorageAnalysis;
+// use crate::storage_analysis_plot::analysis::StorageAnalysis;
 use crate::types::DupFile;
-use crate::utils;
+use crate::utils::{self, format_size};
 
 glib::wrapper! {
     pub struct SmartShredsWindow(ObjectSubclass<imp::SmartShredsWindow>)
@@ -209,15 +210,26 @@ impl SmartShredsWindow {
     }
 
     fn display_file_types(&self) {
-        let mut image_file_paths = vec![
-            "assets/icons/document.png",
-            "assets/icons/image.png",
-            "assets/icons/video.png",
-            "assets/icons/audio.png",
-            "assets/icons/other.png",
-        ];
-
+        let mut names_for_background = vec!["faint-red", "faint-blue", "faint-green", "faint-yellow", "faint-purple"].into_iter();
         
+        let analysis = StorageAnalysis::analyse();
+
+        if analysis.file_types_info.is_empty() {
+            return;
+        }
+
+        for (file_type, (size, count)) in analysis.file_types_info.iter() {
+            let file_type_box = FileTypeBox::new();
+            file_type_box.set_property("name", names_for_background.next().expect("No more names"));
+            file_type_box.imp().file_type_label.set_label(file_type.into());
+            file_type_box.imp().file_count_label.set_label(&format!("{} items", count));
+            file_type_box.imp().size_label.set_label(
+                &format!("{} of {}", format_size(*size), format_size(analysis.total_device_memory))
+            );
+            file_type_box.imp().size_progress.set_fraction(*size as f64 / analysis.total_device_memory as f64);
+            file_type_box.imp().card_icon.set_from_file(Some(file_type.get_image_icon()));
+            self.imp().file_type_boxes.append(&file_type_box);
+        }        
     }
 }
 

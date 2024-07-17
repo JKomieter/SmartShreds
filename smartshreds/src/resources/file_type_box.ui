@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
     <template class="FileTypeBox" parent="GtkBox">
-        <property name="name">file-type-box</property>
         <property name="focusable">true</property>
         <property name="orientation">vertical</property>
-        <property name="width-request">90</property>
-        <property name="height-request">80</property>
+        <property name="width-request">200</property>
+        <property name="height-request">120</property>
         <property name="name">file_type_box</property>
         <property name="hexpand">true</property>
-        <property name="vexpand">false</property>
+        <property name="vexpand">true</property>
         <property name="spacing">15</property>
         <property name="halign">start</property>
         <property name="valign">start</property>
@@ -22,7 +21,7 @@
                 <property name="baseline-position">top</property>
                 <child>
                     <object class="GtkImage" id="card_icon">
-                        <property name="pixel-size">48</property>
+                        <property name="pixel-size">32</property>
                     </object>
                 </child>
                 <child>
@@ -55,6 +54,7 @@
             <object class="GtkLabel" id="size_label">
                 <style>
                     <class name="heading"/>
+                    <class name="dim-label"/>
                 </style>
             </object>
         </child>

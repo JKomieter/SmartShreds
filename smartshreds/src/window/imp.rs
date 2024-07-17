@@ -50,7 +50,9 @@ impl ObjectImpl for SmartShredsWindow {
     fn constructed(&self) {
         self.parent_constructed();
         let obj = self.obj();
-        obj.display_file_types();
+        glib::spawn_future_local(clone!(#[weak] obj, async move {
+            obj.display_file_types();
+        }));
     }
 }
 

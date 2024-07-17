@@ -48,6 +48,29 @@
     padding: 1em;
 }
 
-#file_type_box {
+
+#faint-red {
+    background-color: #fbd9d3;
     padding: 1em;
 }
+
+#faint-green {
+    background-color: #d3fbd3;
+    padding: 1em;
+}
+
+#faint-blue {
+    background-color: #d3e4fb;
+    padding: 1em;
+}
+
+#faint-yellow {
+    background-color: #fbfbd3;
+    padding: 1em;
+}
+
+#faint-purple {
+    background-color: #fbd3fb;
+    padding: 1em;
+}
+

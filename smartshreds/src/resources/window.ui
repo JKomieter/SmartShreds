@@ -271,13 +271,14 @@
                                                 <!-- File Types -->
                                                 <child>
                                                      <object class="GtkBox" id="file_type_boxes">
-                                                        <property name="vexpand">false</property>
+                                                        <property name="vexpand">true</property>
                                                         <property name="orientation">horizontal</property>
                                                         <property name="hexpand">true</property>
-                                                        <property name="height-request">100</property>
+                                                        <property name="height-request">120</property>
                                                         <property name="margin-bottom">20</property>
                                                         <property name="margin-start">20</property>
                                                         <property name="margin-end">20</property>
+                                                        <property name="spacing">15</property>
                                                      </object>
                                                 </child>
                                                 <!-- End of File Types -->
