@@ -16,11 +16,13 @@ SmartShreds is a Rust-based desktop application that enhances file management by
 ## Technologies
 - GTK4
 - Rust
+- Plotter rs
+- Linfa
 
 
-## Media
+## State of Project
+<img width="1117" alt="Screenshot 2024-07-17 at 1 02 09 AM" src="https://github.com/user-attachments/assets/f763e50b-6bac-439d-a372-d40f9c7afdd3">
 
-https://github.com/user-attachments/assets/c697caa5-b5f0-4227-b453-70092e320b78
 
 
 ## Installation
@@ -50,7 +52,7 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+This project is licensed under the Apache License. See the [LICENSE](LICENSE) file for more details.
 
 ## Additional Features (Future Enhancements)
 
@@ -61,5 +63,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 - **File Recovery**: Implement a feature to recover deleted files, if possible.
 - **File Compression**: Add a feature to compress rarely used files to save storage space.
 - **File Encryption**: Add a feature to encrypt sensitive files for security.
-- **User Interface**: Develop a user-friendly interface for interacting with the tool, whether a command-line interface, a web interface, or a desktop application.
 - **Testing and Documentation**: Write comprehensive tests for the application and document all features thoroughly.
