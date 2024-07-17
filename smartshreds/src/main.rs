@@ -4,7 +4,8 @@ mod errors;
 mod types;
 mod dup_file_row;
 mod dup_file_object;
-// mod storage_analysis;
+mod storage_analysis_plot;
+mod file_type_box;
 
 
 use gtk::{gdk::Display, gio, glib, CssProvider};

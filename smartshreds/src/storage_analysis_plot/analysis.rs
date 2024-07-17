@@ -34,7 +34,6 @@ pub enum FileType {
     Video,
     Audio,
     Document,
-    Code,
     Other
 }
 
@@ -77,16 +76,18 @@ impl From<&str> for FileType {
             "jpg" | "jpeg" | "png" | "gif" | "bmp" | "svg" => FileType::Image,
             "mp4" | "avi" | "mkv" | "flv" | "wmv" | "mov" => FileType::Video,
             "mp3" | "wav" | "flac" | "aac" | "ogg" => FileType::Audio,
-            "js"  | "html" | "css" | "py" | "go" | "java" | "cpp" | "c" | "h" | "hpp" | "rs" | "ts" | "json" | "xml" | "yaml" | "toml" => FileType::Code,
+            "js"  | "html" | "css" | "py" | "go" | "java" | "cpp" | "c" | "h" | "hpp" | "rs" | "ts" | "json" | "xml" | "yaml" | "toml" => FileType::Document,
             _ => FileType::Other
         }
     }
 }
 
 impl StorageAnalysis {
-    pub fn analyse(path: &PathBuf) -> Self {
+    pub fn analyse() -> Self {
         let mut sys = System::new_all();
         sys.refresh_all();
+
+        let path = PathBuf::from("");
 
         let total_device_memory = sys.total_memory();
         let memory_used = sys.used_memory();
@@ -97,8 +98,12 @@ impl StorageAnalysis {
             ..Default::default()
         };
         
-        analysis.traverse_directory(path);
+        analysis.traverse_directory(&path);
         analysis
+    }
+
+    fn start_os_dir_path() -> PathBuf {
+        
     }
 
     fn traverse_directory(&mut self, path: &PathBuf) {
@@ -107,7 +112,6 @@ impl StorageAnalysis {
         if let Ok(entries) = fs::read_dir(path) {
             for entry in entries.flatten() {
                 let path = entry.path();
-                
                 if path.is_dir() {
                     self.memory_usage.total_folders += 1;
                     self.traverse_directory(&path);
@@ -167,8 +171,7 @@ mod test {
 
     #[test] 
     pub fn test_storage_analysis() {
-        let path = PathBuf::from("test_dir");
-        let analysis = StorageAnalysis::analyse(&path);
+        let analysis = StorageAnalysis::analyse();
         assert!(analysis.total_number_of_files > 0);
         assert!(analysis.memory_usage.size > 0);
     }

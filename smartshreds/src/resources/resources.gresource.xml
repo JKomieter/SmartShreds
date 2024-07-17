@@ -3,6 +3,7 @@
   <gresource prefix="/org/gtk_rs/SmartShreds/">
     <file compressed="true" preprocess="xml-stripblanks">window.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">dup_file_row.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">file_type_box.ui</file>
     <file compressed="true">style.css</file>
   </gresource>
 </gresources>

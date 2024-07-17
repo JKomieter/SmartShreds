@@ -1,7 +1,7 @@
 
 use std::cell::{Cell, RefCell};
 use gtk::{self, glib::{self, clone, subclass::InitializingObject}, 
-    Button, CompositeTemplate, Label, ListBox, ListBoxRow};
+    Button, CompositeTemplate, Label, ListBox, ListBoxRow, Box};
 use adw::subclass::prelude::*;
 use adw::prelude::*;
 
@@ -10,7 +10,11 @@ use crate::types::DupFile;
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/gtk_rs/SmartShreds/window.ui")]
 pub struct SmartShredsWindow {
-    // First page showing he duplicate files.
+    // home page
+    #[template_child]
+    pub file_type_boxes: TemplateChild<Box>,
+
+    // duplicate page.
     #[template_child]
     pub listbox: TemplateChild<ListBox>,
     pub duplicates_vec: RefCell<Vec<Vec<DupFile>>>,
@@ -45,6 +49,8 @@ impl ObjectSubclass for SmartShredsWindow {
 impl ObjectImpl for SmartShredsWindow {
     fn constructed(&self) {
         self.parent_constructed();
+        let obj = self.obj();
+        obj.display_file_types();
     }
 }
 

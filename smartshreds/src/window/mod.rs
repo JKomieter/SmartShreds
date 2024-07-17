@@ -3,7 +3,7 @@ mod imp;
 use std::collections::HashMap;
 use std::fs::File;
 use std::io::Read;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 use sha2::{Digest, Sha256};
 use adw::{prelude::*, AlertDialog, ResponseAppearance, Toast, };
 use gtk::gio::Cancellable;
@@ -14,6 +14,8 @@ use adw::subclass::prelude::*;
 
 use crate::dup_file_object::DupFileObject;
 use crate::dup_file_row::DupFileRow;
+use crate::file_type_box::FileTypeBox;
+use crate::storage_analysis_plot::analysis::StorageAnalysis;
 use crate::types::DupFile;
 use crate::utils;
 
@@ -204,6 +206,18 @@ impl SmartShredsWindow {
             self.imp().toastoverlay.add_toast(toast);
             self.present_duplicates();
         }
+    }
+
+    fn display_file_types(&self) {
+        let mut image_file_paths = vec![
+            "assets/icons/document.png",
+            "assets/icons/image.png",
+            "assets/icons/video.png",
+            "assets/icons/audio.png",
+            "assets/icons/other.png",
+        ];
+
+        
     }
 }
 
