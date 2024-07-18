@@ -6,7 +6,7 @@ mod dup_file_row;
 mod dup_file_object;
 mod storage_analysis_plot;
 mod file_type_box;
-
+mod recents_box;
 
 use gtk::{gdk::Display, gio, glib, CssProvider};
 use adw::prelude::*;

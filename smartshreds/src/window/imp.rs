@@ -13,6 +13,8 @@ pub struct SmartShredsWindow {
     // home page
     #[template_child]
     pub file_type_boxes: TemplateChild<Box>,
+    #[template_child]
+    pub recents_and_graph: TemplateChild<Box>,
 
     // duplicate page.
     #[template_child]
@@ -50,8 +52,9 @@ impl ObjectImpl for SmartShredsWindow {
     fn constructed(&self) {
         self.parent_constructed();
         let obj = self.obj();
+        
         glib::spawn_future_local(clone!(#[weak] obj, async move {
-            obj.display_file_types();
+            obj.display_analysis();
         }));
     }
 }

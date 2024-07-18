@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="RecentsBox" parent="GtkBox">
+        <property name="height-request">400</property>
+        <property name="width-request">400</property>
+        <child>
+            <object class="GtkNotebook">
+                <property name="enable-popup">true</property>
+                <property name="show-tabs">true</property>
+                <property name="vexpand">true</property>
+                <property name="width-request">400</property>
+                <child>
+                    <object class="GtkNotebookPage">
+                        <property name="tab-label">Recents</property>
+                        <property name="child">
+                            <object class="GtkLabel">
+                                <property name="label">Recents</property>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkNotebookPage">
+                        <property name="tab-label">Favorites</property>
+                        <property name="child">
+                            <object class="GtkLabel">
+                                <property name="label">Favorites</property>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkNotebookPage">
+                        <property name="tab-label">Shared</property>
+                        <property name="child">
+                            <object class="GtkLabel">
+                                <property name="label">Shared</property>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+            </object>
+        </child>
+    </template>
+</interface>

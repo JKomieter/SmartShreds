@@ -17,6 +17,26 @@ pub fn format_size(size: u64) -> String {
     }
 }
 
+pub fn format_number(number: u64) -> String {
+    if number < 1000 {
+        return number.to_string();
+    }
+    let mut n = number;
+    let mut count = 0;
+    while n >= 1000 {
+        n /= 1000;
+        count += 1;
+    }
+    let suffix = match count {
+        1 => "K",
+        2 => "M",
+        3 => "B",
+        4 => "T",
+        _ => "E",
+    };
+    format!("{}{}", n, suffix)
+}
+
 /// Get the tooltip markup for a row
 // #[inline]
 pub fn row_tooltip_markup(file_path: &str) -> String {

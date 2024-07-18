@@ -15,10 +15,11 @@ use adw::subclass::prelude::*;
 use crate::dup_file_object::DupFileObject;
 use crate::dup_file_row::DupFileRow;
 use crate::file_type_box::FileTypeBox;
+use crate::recents_box::RecentsBox;
 use crate::storage_analysis_plot::analysis::StorageAnalysis;
 // use crate::storage_analysis_plot::analysis::StorageAnalysis;
 use crate::types::DupFile;
-use crate::utils::{self, format_size};
+use crate::utils::{format_number, format_size, row_tooltip_markup};
 
 glib::wrapper! {
     pub struct SmartShredsWindow(ObjectSubclass<imp::SmartShredsWindow>)
@@ -138,12 +139,12 @@ impl SmartShredsWindow {
       
         duplicate_vec.iter().for_each(|dup_file| {
             let row = self.create_dup_row(dup_file);
-            let tooltip_markup = utils::row_tooltip_markup(&dup_file.file_path.to_string_lossy());
+            let tooltip_markup = row_tooltip_markup(&dup_file.file_path.to_string_lossy());
             row.set_tooltip_text(Some(&tooltip_markup));
             self.imp().listbox.append(&row);
         });
         if duplicate_vec.len() > 0 {
-            let filesize = &format!("FILE SIZE: {}", utils::format_size(duplicate_vec[0].file_size));
+            let filesize = &format!("FILE SIZE: {}", format_size(duplicate_vec[0].file_size));
             self.imp().filesize.set_label(filesize);
         }
 
@@ -152,7 +153,7 @@ impl SmartShredsWindow {
     /// Create a listbox row for the duplicate
     // #[inline]
     fn create_dup_row(&self, dup_file: &DupFile) -> ListBoxRow {
-        let filesize = utils::format_size(dup_file.file_size);
+        let filesize = format_size(dup_file.file_size);
         let dup_file_object = DupFileObject::new(
             dup_file.file_name.clone(),
             filesize,
@@ -209,10 +210,13 @@ impl SmartShredsWindow {
         }
     }
 
-    fn display_file_types(&self) {
+    fn display_analysis(&self) {
         let mut names_for_background = vec!["faint-red", "faint-blue", "faint-green", "faint-yellow", "faint-purple"].into_iter();
         
         let analysis = StorageAnalysis::analyse();
+
+        let recents_box = RecentsBox::new();
+        self.imp().recents_and_graph.append(&recents_box);
 
         if analysis.file_types_info.is_empty() {
             return;
@@ -222,6 +226,7 @@ impl SmartShredsWindow {
             let file_type_box = FileTypeBox::new();
             file_type_box.set_property("name", names_for_background.next().expect("No more names"));
             file_type_box.imp().file_type_label.set_label(file_type.into());
+            let count = format_number(*count);
             file_type_box.imp().file_count_label.set_label(&format!("{} items", count));
             file_type_box.imp().size_label.set_label(
                 &format!("{} of {}", format_size(*size), format_size(analysis.total_device_memory))

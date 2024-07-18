@@ -4,7 +4,7 @@
         <property name="focusable">true</property>
         <property name="orientation">vertical</property>
         <property name="width-request">200</property>
-        <property name="height-request">120</property>
+        <property name="height-request">110</property>
         <property name="name">file_type_box</property>
         <property name="hexpand">true</property>
         <property name="vexpand">true</property>

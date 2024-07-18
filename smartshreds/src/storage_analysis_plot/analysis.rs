@@ -12,6 +12,7 @@ pub struct StorageAnalysis {
     pub junk_files: Vec<JunkFiles>,
     pub memory_usage: MemoryUsage,
     pub total_device_memory: u64,
+    pub recent_files: Vec<PathBuf>,
 }
 
 #[derive(Debug, Clone, Default)]
@@ -131,20 +132,20 @@ impl StorageAnalysis {
             if unpermitted_dirs.contains(dir_parent) {
                 continue;
             }
-            
+
             if dir.is_dir() {
                 self.memory_usage.total_folders += 1;
                 match fs::read_dir(&dir) {
                     Ok(entries) => {
                         for entry in entries.flatten() {
-                            dir_queue.push_back(entry.path()); 
+                            dir_queue.push_back(entry.path());
                         }
                     }
                     Err(e) => {
                         eprintln!("Error reading directory {:?}: {}", dir, e);
                         unpermitted_dirs.insert(dir_parent.to_path_buf());
                         continue;
-                    },
+                    }
                 }
             } else {
                 self.memory_usage.total_files += 1;
@@ -169,14 +170,36 @@ impl StorageAnalysis {
             entry.0 += file_size;
             entry.1 += 1;
 
-            if let Ok(accessed) = metadata.accessed().map(|t| DateTime::<Utc>::from(t)) {
-                if accessed < (Utc::now() - chrono::Duration::days(365)) {
-                    self.inactive_files.push(path.clone());
-                }
+            // check for recent created or modified file in the last 7 days and inactive files
+            let (created, accessed, modified) = self.get_file_timestamps(path);
+            if modified > (Utc::now() - chrono::Duration::days(7))
+                || created > (Utc::now() - chrono::Duration::days(7))
+                || accessed > (Utc::now() - chrono::Duration::days(7))
+            {
+                self.recent_files.push(path.clone());
+            } else if accessed < (Utc::now() - chrono::Duration::days(365)) {
+                self.inactive_files.push(path.clone());
             }
 
             self.detect_junk_files();
         }
+    }
+
+    fn get_file_timestamps(&self, path: &PathBuf) -> (DateTime<Utc>, DateTime<Utc>, DateTime<Utc>) {
+        let metadata = fs::metadata(path).expect("Error getting file metadata");
+        let modified = metadata
+            .modified()
+            .map(|t| DateTime::<Utc>::from(t))
+            .unwrap();
+        let created = metadata
+            .created()
+            .map(|t| DateTime::<Utc>::from(t))
+            .unwrap();
+        let accessed = metadata
+            .accessed()
+            .map(|t| DateTime::<Utc>::from(t))
+            .unwrap();
+        (created, accessed, modified)
     }
 
     fn detect_junk_files(&mut self) {}

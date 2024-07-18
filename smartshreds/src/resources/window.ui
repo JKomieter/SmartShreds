@@ -174,7 +174,7 @@
                                                                     </object>
                                                                 </child>
                                                                 <child>
-                                                                    <object class="GtkEntry">
+                                                                    <object class="GtkSearchEntry">
                                                                         <property name="placeholder-text" translatable="yes">Search files...</property>
                                                                         <property name="name">entry</property>
                                                                         <property name="width-request">280</property>
@@ -271,9 +271,8 @@
                                                 <!-- File Types -->
                                                 <child>
                                                      <object class="GtkBox" id="file_type_boxes">
-                                                        <property name="vexpand">true</property>
+                                                        <property name="vexpand">false</property>
                                                         <property name="orientation">horizontal</property>
-                                                        <property name="hexpand">true</property>
                                                         <property name="height-request">120</property>
                                                         <property name="margin-bottom">20</property>
                                                         <property name="margin-start">20</property>
@@ -282,9 +281,20 @@
                                                      </object>
                                                 </child>
                                                 <!-- End of File Types -->
+                                                <!-- Recents and Graph -->
                                                 <child>
-                                                    <object class="GtkBox"></object>
+                                                    <object class="GtkBox" id="recents_and_graph">
+                                                        <property name="orientation">horizontal</property>
+                                                        <property name="margin-start">20</property>
+                                                        <property name="margin-end">20</property>
+                                                        <property name="hexpand">true</property>
+                                                        <property name="vexpand">true</property>
+                                                        <property name="spacing">20</property>
+                                                        <property name="height-request">400</property>
+                                                        <property name="margin-bottom">20</property>
+                                                    </object>
                                                 </child>
+                                                <!-- End of Recents and Graph -->
                                             </object>
                                         </child>
                                     </object>
@@ -325,7 +335,7 @@
                                                     <object class="GtkBox">
                                                         <property name="orientation">horizontal</property>
                                                         <child>
-                                                            <object class="GtkEntry" id="entry">
+                                                            <object class="GtkSearchEntry" id="entry">
                                                                 <property name="margin-end">10</property>
                                                                 <property name="placeholder-text" translatable="yes">Search files...</property>
                                                                 <property name="name">entry</property>
