@@ -21,8 +21,7 @@ SmartShreds is a Rust-based desktop application that enhances file management by
 
 
 ## State of Project
-<img width="1117" alt="Screenshot 2024-07-17 at 1 02 09 AM" src="https://github.com/user-attachments/assets/f763e50b-6bac-439d-a372-d40f9c7afdd3">
-
+![Screenshot 2024-07-17 at 10 38 04 PM](https://github.com/user-attachments/assets/90a15f34-fdec-4c13-a662-d0c41bdf5d51)
 
 
 ## Installation
