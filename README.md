@@ -1,23 +1,19 @@
 # SmartShreds 
 ### (in progress)
-
-
-SmartShreds is a Rust-based desktop application that enhances file management by detecting duplicate files through content and semantic similarity analysis. It uses hashing algorithms and NLP libraries to suggest merging, repurposing, and highlighting differences between similar files. Aimed at optimizing storage and improving content organization with AI-powered tools, SmartShreds is a sophisticated solution for managing digital clutter.
+SmartShreds is a Rust-based desktop application designed to help educators and students efficiently manage and organize their files. Leveraging AI capabilities, SmartShreds identifies and highlights relevant file paths, providing suggestions on file organization and storage optimization.
 
 ## Future Key Features
 
-- **Content-based Duplicate Detection**: Uses hashing algorithms to detect duplicates.
-- **Semantic Similarity Analysis**: Utilizes Natural Language Processing (NLP) libraries for content analysis.
-- **Actionable Suggestions**:
-  - Merge files with highly similar content.
-  - Repurpose content for different formats based on semantic analysis.
-  - Highlight key differences between similar files.
+- **AI-Driven File Path Identification**: Utilize AI to determine the relevance of file paths based on metadata.
+- **Cross-Platform Support**: Compatible with Windows, macOS, and Linux.
+- **User-Friendly Interface**: An intuitive interface with detailed insights and recommendations.
+- **Efficient Storage Optimization**: Optimize storage by identifying and suggesting files that can be deleted or archived.
 
 ## Technologies
 - GTK4
 - Rust
-- Plotter rs
-- Linfa
+- OpenAI
+- NodeJS
 
 
 ## State of Project
@@ -45,6 +41,32 @@ cargo run --release
 
 ```
 
+## Application usage
+
+### Home Screen:
+
+- **Displays various file types and the space they occupy.**
+Provides options to view recent files and suggested actions.
+Analyze File Paths:
+
+- **Select file paths to analyze.**
+Get AI-driven suggestions on relevance and organization.
+Optimize Storage:
+
+- **Identify and remove duplicate or unnecessary files.**
+Organize files efficiently based on AI recommendations.
+
+
+### How It Works
+
+- **File Path Analysis:**
+The application sends a list of file paths and metadata to the backend service.
+The backend service uses the OpenAI API to analyze the relevance of each file path.
+
+- **AI Integration:**
+The backend service processes the data and returns relevant file paths and recommendations.
+The Rust client displays these recommendations to the user.
+
 ## Contributing
 
 Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTING.md) for more details.
@@ -53,13 +75,3 @@ Contributions are welcome! Please read our [Contributing Guidelines](CONTRIBUTIN
 
 This project is licensed under the Apache License. See the [LICENSE](LICENSE) file for more details.
 
-## Additional Features (Future Enhancements)
-
-- **Duplicate File Finder**: Continue with the current functionality of finding duplicate files, enhanced by comparing file contents to ensure they are truly duplicates.
-- **File Type Analyzer**: Add functionality to analyze and categorize files based on their type (e.g., images, videos, documents).
-- **Storage Analyzer**: Analyze storage usage, calculating the percentage used by each file type.
-- **File History Tracker**: Track changes to files over time, including creation, modification, and deletion.
-- **File Recovery**: Implement a feature to recover deleted files, if possible.
-- **File Compression**: Add a feature to compress rarely used files to save storage space.
-- **File Encryption**: Add a feature to encrypt sensitive files for security.
-- **Testing and Documentation**: Write comprehensive tests for the application and document all features thoroughly.
