@@ -97,7 +97,7 @@ impl SmartShredsWindow {
         // match the index of the row selected to the navigation page tag.
         let tag = match index {
             1 => "home",
-            2 => "find-duplicates",
+            2 => "categories",
             _ => "home",
         };
         self.navigationview.pop();

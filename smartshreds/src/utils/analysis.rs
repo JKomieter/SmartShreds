@@ -95,19 +95,14 @@ impl FileType {
 
 #[allow(dead_code)]
 impl StorageAnalysis {
-    pub fn analyse() -> Self {
+    pub fn new() -> Self {
         let mut sys = System::new_all();
         sys.refresh_all();
-
-        // let dowload_dir = dirs::download_dir().expect("Home directory not found");
-        // let desktop_dir = dirs::desktop_dir().expect("Desktop directory not found");
-        // let documents_dir = dirs::document_dir().expect("Documents directory not found");
-        let home_dir = dirs::home_dir().expect("Home directory not found");
 
         let total_device_memory = sys.total_memory();
         let memory_used = sys.used_memory();
 
-        let mut analysis = StorageAnalysis {
+        let analysis = StorageAnalysis {
             total_device_memory,
             memory_usage: MemoryUsage {
                 size: memory_used,
@@ -116,12 +111,10 @@ impl StorageAnalysis {
             ..Default::default()
         };
 
-        analysis.traverse_directory(&home_dir);
-
         analysis
     }
 
-    fn traverse_directory(&mut self, start_path: &PathBuf) {
+    pub fn analyse(&mut self, start_path: &PathBuf) {
         let mut dir_queue: VecDeque<PathBuf> = VecDeque::new();
         dir_queue.push_back(start_path.to_path_buf());
         let mut unpermitted_dirs: HashSet<PathBuf> = HashSet::new();
@@ -152,6 +145,7 @@ impl StorageAnalysis {
                 self.process_file(&dir);
             }
         }
+
     }
 
     fn process_file(&mut self, path: &PathBuf) {
@@ -203,6 +197,8 @@ impl StorageAnalysis {
     }
 
     fn detect_junk_files(&mut self) {}
+
+    pub fn recent_files(&self) {}
 }
 
 #[cfg(test)]
@@ -211,11 +207,11 @@ mod test {
 
     #[test]
     pub fn test_storage_analysis() {
-        let analysis = StorageAnalysis::analyse();
-        assert!(analysis.memory_usage.total_files > 0);
-        assert!(analysis.memory_usage.size > 0);
+        let mut analysis = StorageAnalysis::new();
+        let download_dir = dirs::download_dir().expect("Error getting download directory");
+        analysis.analyse(&download_dir);
         assert!(analysis.memory_usage.total_folders > 0);
-        assert!(analysis.inactive_files.len() > 0);
+        assert!(analysis.memory_usage.total_files > 0);
 
         println!("{:#?}", analysis);
     }

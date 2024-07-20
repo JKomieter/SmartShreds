@@ -1,3 +1,5 @@
+pub mod analysis;
+
 use chrono::prelude::*;
 use std::fs;
 use std::rc::Rc;

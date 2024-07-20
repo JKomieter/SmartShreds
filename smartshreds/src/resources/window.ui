@@ -50,12 +50,12 @@
                                 <property name="name">box-row</property>
                                 <child>
                                     <object class="GtkImage">
-                                        <property name="icon-name">user-home-symbolic</property>
+                                        <property name="file">assets/icons/home.png</property>
                                     </object>
                                 </child>
                                 <child>
                                     <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Home</property>
+                                        <property name="label" translatable="yes">Dashboard</property>
                                         <property name="name">label-row</property>
                                     </object>
                                 </child>
@@ -73,12 +73,12 @@
                                 <property name="name">box-row</property>
                                 <child>
                                     <object class="GtkImage">
-                                        <property name="icon-name">document-open-symbolic</property>
+                                        <property name="file">assets/icons/categories.png</property>
                                     </object>
                                 </child>
                                 <child>
                                     <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Find duplicates</property>
+                                        <property name="label" translatable="yes">Categories</property>
                                         <property name="name">label-row</property>
                                     </object>
                                 </child>
@@ -96,12 +96,12 @@
                                 <property name="name">box-row</property>
                                 <child>
                                     <object class="GtkImage">
-                                        <property name="icon-name">document-open-symbolic</property>
+                                        <property name="file">assets/icons/recent.png</property>
                                     </object>
                                 </child>
                                 <child>
                                     <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Smart organize</property>
+                                        <property name="label" translatable="yes">Recent files</property>
                                         <property name="name">label-row</property>
                                     </object>
                                 </child>
@@ -119,12 +119,81 @@
                                 <property name="name">box-row</property>
                                 <child>
                                     <object class="GtkImage">
-                                        <property name="icon-name">user-trash</property>
+                                        <property name="file">assets/icons/duplicates.png</property>
                                     </object>
                                 </child>
                                 <child>
                                     <object class="GtkLabel">
-                                        <property name="label" translatable="yes">Shred files</property>
+                                        <property name="label" translatable="yes">Duplicates</property>
+                                        <property name="name">label-row</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBoxRow">
+                        <property name="selectable">true</property>
+                        <property name="activatable">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <property name="name">box-row</property>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="file">assets/icons/organize.png</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Organize</property>
+                                        <property name="name">label-row</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBoxRow">
+                        <property name="selectable">true</property>
+                        <property name="activatable">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <property name="name">box-row</property>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="file">assets/icons/search.png</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Search</property>
+                                        <property name="name">label-row</property>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <child>
+                    <object class="GtkListBoxRow">
+                        <property name="selectable">true</property>
+                        <property name="activatable">true</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">horizontal</property>
+                                <property name="name">box-row</property>
+                                <child>
+                                    <object class="GtkImage">
+                                        <property name="file">assets/icons/help.png</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Help</property>
                                         <property name="name">label-row</property>
                                     </object>
                                 </child>
@@ -304,6 +373,26 @@
                     </object>
                 </child>
                 <!-- Home Page -->
+                <!-- Categories Page -->
+                <child>
+                    <object class="AdwNavigationPage">
+                        <property name="title" translatable="yes">Categories</property>
+                        <property name="tag">categories</property>
+                        <property name="child">
+                            <object class="AdwToolbarView">
+                                <child type="top">
+                                    <object class="AdwHeaderBar"/>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        
+                                    </object>
+                                </child>
+                            </object>
+                        </property>
+                    </object>
+                </child>
+                <!-- End of Categories Page -->
                 <!-- Find Duplicates Page-->
                 <child>
                     <object class="AdwNavigationPage">

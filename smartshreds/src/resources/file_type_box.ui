@@ -31,13 +31,16 @@
                         <property name="valign">start</property>
                         <child>
                             <object class="GtkLabel" id="file_type_label">
+                                <property name="halign">start</property>
                                 <style>
                                     <class name="title-3"/>
                                 </style>
                             </object>
                         </child>
                         <child>
-                            <object class="GtkLabel" id="file_count_label"></object>
+                            <object class="GtkLabel" id="file_count_label">
+                                <property name="halign">start</property>
+                            </object>
                         </child>
                     </object>
                 </child>
@@ -52,6 +55,7 @@
         </child>
         <child>
             <object class="GtkLabel" id="size_label">
+                <property name="halign">start</property>
                 <style>
                     <class name="heading"/>
                     <class name="dim-label"/>

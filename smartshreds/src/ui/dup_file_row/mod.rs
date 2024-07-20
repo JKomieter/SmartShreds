@@ -1,10 +1,9 @@
 mod imp;
 
-use adw::prelude::*;
 use gtk::{self, glib::{self, Object}};
 use adw::subclass::prelude::*;
-
-use crate::dup_file_object::DupFileObject;
+use adw::prelude::*;
+use super::dup_file_object::DupFileObject;
 
 
 glib::wrapper! {
