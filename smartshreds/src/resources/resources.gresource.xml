@@ -5,6 +5,7 @@
     <file compressed="true" preprocess="xml-stripblanks">dup_file_row.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">file_type_box.ui</file>
     <file compressed="true" preprocess="xml-stripblanks">recents_box.ui</file>
+    <file compressed="true" preprocess="xml-stripblanks">onboarding.ui</file>
     <file compressed="true">style.css</file>
   </gresource>
 </gresources>

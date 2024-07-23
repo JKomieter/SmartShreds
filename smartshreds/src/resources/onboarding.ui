@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+    <template class="OnBoarding" parent="GtkBox">
+        <property name="hexpand">false</property>
+        <property name="width-request">300</property>
+        <property name="height-request">400</property>
+        <child>
+            <object class="AdwNavigationView" id="navigation_view">
+                <!-- Step 1 -->
+                <child>
+                    <object class="AdwNavigationPage">
+                        <property name="title" translatable="yes"></property>
+                        <property name="tag">onboarding-step-1</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">12</property>
+                                <property name="hexpand">true</property>
+                                <property name="vexpand">true</property>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Welcome to SmartShreds</property>
+                                        <property name="halign">start</property>
+                                        <property name="margin-top">48</property>
+                                        <property name="margin-bottom">7</property>
+                                        <property name="name">welcome-title</property>
+                                        <style>
+                                            <class name="title-1" />
+                                        </style>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">SmartShreds is a simple and easy to use note taking app. It helps you to keep your notes organized and easily accessible.</property>
+                                        <property name="halign">start</property>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkButton">
+                                        <property name="label">Get Started</property>
+                                        <property name="margin-top">48</property>
+                                        <property name="action-name">navigation.push</property>
+                                        <property name="action-target">'onboarding-step-2'</property>
+                                        <style>
+                                            <class name="suggested-action" />
+                                        </style>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <!-- Step 2 -->
+                <child>
+                    <object class="AdwNavigationPage">
+                        <property name="title" translatable="yes"></property>
+                        <property name="tag">onboarding-step-2</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">20</property>
+                                <property name="hexpand">true</property>
+                                <property name="vexpand">true</property>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">10</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label" translatable="yes">1. Are you a Student, Educator or Researcher?</property>
+                                                <property name="halign">start</property>
+                                                <style>
+                                                    <class name="title-4" />
+                                                </style>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkDropDown" id="role">
+                                                <property name="model">
+                                                    <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">Student</item>
+                                                        <item translatable="yes">Educator</item>
+                                                        <item translatable="yes">Researcher</item>
+                                                        <item translatable="yes">Other</item>
+                                                    </items>
+                                                    </object>
+                                                </property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">10</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label" translatable="yes">2. What features are you looking for in a file manager?</property>
+                                                <property name="halign">start</property>
+                                                <style>
+                                                    <class name="title-4" />
+                                                </style>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkDropDown" id="feature">
+                                                <property name="model">
+                                                    <object class="GtkStringList">
+                                                    <items>
+                                                        <item translatable="yes">File organization</item>
+                                                        <item translatable="yes">Duplicate detection</item>
+                                                        <item translatable="yes">Reducing clutter</item>
+                                                        <item translatable="yes">Other</item>
+                                                    </items>
+                                                    </object>
+                                                </property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">horizontal</property>
+                                        <property name="spacing">10</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="label" translatable="yes">3. Would you like notifications for file organization or backup reminders?</property>
+                                                <property name="halign">start</property>
+                                                <style>
+                                                    <class name="title-4" />
+                                                </style>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkSwitch"></object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkButton">
+                                        <property name="label">Next</property>
+                                        <property name="margin-top">24</property>
+                                        <property name="action-name">navigation.push</property>
+                                        <property name="action-target">'onboarding-step-3'</property>
+                                        <style>
+                                            <class name="suggested-action" />
+                                        </style>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <!-- Step 3 -->
+                <child>
+                    <object class="AdwNavigationPage">
+                        <property name="title" translatable="yes"></property>
+                        <property name="tag">onboarding-step-3</property>
+                        <child>
+                            <object class="GtkBox">
+                                <property name="orientation">vertical</property>
+                                <property name="spacing">30</property>
+                                <property name="hexpand">true</property>
+                                <property name="vexpand">true</property>
+                                <child>
+                                    <object class="GtkLabel">
+                                        <property name="label" translatable="yes">Create an account</property>
+                                        <property name="halign">start</property>
+                                        <style>
+                                            <class name="title-1" />
+                                        </style>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">10</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Username</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkEntry">
+                                                <property name="placeholder-text" translatable="yes">Enter your username</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">10</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Email</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkEntry">
+                                                <property name="placeholder-text" translatable="yes">Enter your email</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">10</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Password</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkPasswordEntry">
+                                                <property name="placeholder-text" translatable="yes">Enter your password</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkBox">
+                                        <property name="orientation">vertical</property>
+                                        <property name="spacing">10</property>
+                                        <child>
+                                            <object class="GtkLabel">
+                                                <property name="halign">start</property>
+                                                <property name="label" translatable="yes">Confirm Password</property>
+                                            </object>
+                                        </child>
+                                        <child>
+                                            <object class="GtkPasswordEntry">
+                                                <property name="placeholder-text" translatable="yes">Enter your password again</property>
+                                            </object>
+                                        </child>
+                                    </object>
+                                </child>
+                                <child>
+                                    <object class="GtkButton">
+                                        <property name="label">Sign Up</property>
+                                        <property name="margin-top">24</property>
+                                        <property name="action-name">navigation.push</property>
+                                        <property name="action-target">'onboarding-step-4'</property>
+                                        <style>
+                                            <class name="suggested-action" />
+                                        </style>
+                                    </object>
+                                </child>
+                            </object>
+                        </child>
+                    </object>
+                </child>
+                <!-- Step 4 -->
+            </object>
+        </child>
+    </template>
+</interface>

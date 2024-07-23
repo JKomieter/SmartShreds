@@ -74,3 +74,11 @@
     padding: 1em;
 }
 
+#category-card {
+    padding: 1em;
+    border: 0.2px solid rgb(255, 255, 255);
+}
+#welcome-title {
+    font-size: 4em;
+    font-weight: bolder;
+}

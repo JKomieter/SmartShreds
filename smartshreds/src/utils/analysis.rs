@@ -1,8 +1,13 @@
 use chrono::{DateTime, Utc};
+// use gtk::glib::{self, clone};
+// use reqwest::Client;
 use std::collections::{HashMap, HashSet, VecDeque};
 use std::fs;
 use std::path::PathBuf;
 use sysinfo::System;
+// use serde::{Deserialize, Serialize};
+// use serde_json::json;
+// use super::runtime;
 
 #[derive(Debug, Clone, Default)]
 pub struct StorageAnalysis {
@@ -119,6 +124,19 @@ impl StorageAnalysis {
         dir_queue.push_back(start_path.to_path_buf());
         let mut unpermitted_dirs: HashSet<PathBuf> = HashSet::new();
 
+        // let (sender, receiver) = async_channel::bounded(1);
+        // runtime().spawn(clone!(
+        //     #[strong]
+        //     sender,
+        //     async move {
+
+        //     }
+        // ));
+
+        // glib::spawn_future_local(async move {
+            
+        // });
+
         while let Some(dir) = dir_queue.pop_front() {
             let dir_parent = dir.parent().expect("Error getting parent directory");
             // skip directories that are not permitted
@@ -145,7 +163,6 @@ impl StorageAnalysis {
                 self.process_file(&dir);
             }
         }
-
     }
 
     fn process_file(&mut self, path: &PathBuf) {

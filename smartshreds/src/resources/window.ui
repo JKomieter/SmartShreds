@@ -385,7 +385,128 @@
                                 </child>
                                 <child>
                                     <object class="GtkBox">
-                                        
+                                        <property name="orientation">vertical</property>
+                                        <property name="vexpand">true</property>
+                                        <property name="hexpand">true</property>
+                                        <!-- Header -->
+                                        <child>
+                                            <object class="GtkCenterBox">
+                                                <property name="hexpand">true</property>
+                                                <property name="name">header-row</property>
+                                                <child type="start">
+                                                    <object class="GtkSearchEntry">
+                                                        <property name="placeholder-text" translatable="yes">Search files...</property>
+                                                        <property name="name">entry</property>
+                                                        <property name="width-request">280</property>
+                                                        <property name="vexpand">true</property>
+                                                    </object>
+                                                </child>
+                                                <child type="end">
+                                                    <object class="GtkBox">
+    =                                                   <property name="orientation">horizontal</property>
+                                                        <property name="spacing">10</property>
+                                                        <child>
+                                                            <object class="GtkButton">
+                                                                <child>
+                                                                    <object class="GtkImage">
+                                                                        <property name="file">assets/icons/ai.png</property>
+                                                                        <property name="icon-size">normal</property>
+                                                                    </object>
+                                                                </child>
+                                                            </object>
+                                                        </child>
+                                                        <child>
+                                                            <object class="GtkButton">
+                                                                <child>
+                                                                    <object class="GtkImage">
+                                                                        <property name="file">assets/icons/notification-bell.png</property>
+                                                                        <property name="icon-size">normal</property>
+                                                                    </object>
+                                                                </child>
+                                                            </object>
+                                                        </child>
+                                                        <child>
+                                                            <object class="GtkButton">
+                                                                <child>
+                                                                    <object class="GtkImage">
+                                                                        <property name="file">assets/icons/settings.png</property>
+                                                                        <property name="icon-size">normal</property>
+                                                                    </object>
+                                                                </child>
+                                                            </object>
+                                                        </child>
+                                                        <child>
+                                                            <object class="GtkButton">
+                                                                <style>
+                                                                    <class name="circular"/>
+                                                                </style>
+                                                                <child>
+                                                                    <object class="GtkLabel">
+                                                                        <property name="label" translatable="yes">JK</property>
+                                                                        <style>
+                                                                            <class name="accent"/>
+                                                                            <class name="title-2"/>
+                                                                        </style>
+                                                                    </object>
+                                                                </child>
+                                                            </object>
+                                                        </child>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                        <!-- End of header -->
+                                        <!-- Middle -->
+                                        <child>
+                                            <object class="GtkCenterBox">
+                                                <property name="orientation">horizontal</property>
+                                                <property name="margin-top">20</property>
+                                                <property name="margin-bottom">20</property>
+                                                <property name="margin-start">20</property>
+                                                <property name="margin-end">20</property>
+                                                <child type="start">
+                                                    <object class="GtkBox">
+                                                        <property name="orientation">horizontal</property>
+                                                        <property name="spacing">5</property>
+                                                        <child>
+                                                            <object class="GtkImage">
+                                                                <property name="file">assets/icons/categories.png</property>
+                                                            </object>
+                                                        </child>
+                                                        <child>
+                                                            <object class="GtkLabel">
+                                                                <property name="label" translatable="yes">Categories</property>
+                                                                <style>
+                                                                    <class name="title-4"/>
+                                                                </style>
+                                                            </object>
+                                                        </child>
+                                                    </object>
+                                                </child>
+                                                <child type="end">
+                                                    <object class="GtkButton">
+                                                        <property name="label" translatable="yes">Create category</property>
+                                                        <style>
+                                                            <class name="success"/>
+                                                        </style>
+                                                    </object>
+                                                </child>
+                                            </object>
+                                        </child>
+                                        <!-- End of middle -->
+                                        <!-- Categories -->
+                                        <child>
+                                            <object class="GtkScrolledWindow">
+                                                <property name="hscrollbar-policy">never</property>
+                                                <property name="vscrollbar-policy">always</property>
+                                                <child>
+                                                    <!-- <object class="GtkFlowBox"> -->
+                                                        <!-- categories.ui -->
+                                                    <!-- </object> -->
+                                                </child>
+                                            </object>
+                                        </child>
+                                        <!-- End of Categories -->
                                     </object>
                                 </child>
                             </object>

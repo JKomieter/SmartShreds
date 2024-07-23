@@ -3,7 +3,8 @@ pub mod analysis;
 use chrono::prelude::*;
 use std::fs;
 use std::rc::Rc;
-
+use std::sync::OnceLock;
+use tokio::runtime::Runtime;
 
 /// Get the size of a file
 #[inline]
@@ -92,5 +93,9 @@ mod test {
 
         assert!(row_tooltip_markup(file_path).contains(&metadata.len().to_string()));
     }
-    
 }
+
+// pub fn runtime() -> &'static Runtime {
+//     static RUNTIME: OnceLock<Runtime> = OnceLock::new();
+//     RUNTIME.get_or_init(|| Runtime::new().expect("Setting up tokio runtime needs to succeed."))
+// }

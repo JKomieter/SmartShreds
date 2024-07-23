@@ -4,7 +4,7 @@ use adw::subclass::prelude::*;
 use adw::{prelude::*, AlertDialog, ResponseAppearance, Toast};
 use glib::clone;
 use glib::Object;
-use gtk::gio::Cancellable;
+use gtk::gio::{Cancellable, Settings};
 use gtk::{gio, glib, FileDialog, Label, ListBoxRow, Spinner};
 use sha2::{Digest, Sha256};
 use std::collections::HashMap;
@@ -12,13 +12,16 @@ use std::fs::File;
 use std::io::Read;
 use std::path::PathBuf;
 
-use crate::types::DupFile;
+use crate::types::{AuthSettings, DupFile};
 use crate::ui::dup_file_object::DupFileObject;
 use crate::ui::dup_file_row::DupFileRow;
 use crate::ui::file_type_box::FileTypeBox;
+use crate::ui::onboarding::OnBoarding;
 use crate::ui::recents_box::RecentsBox;
 use crate::utils::analysis::StorageAnalysis;
 use crate::utils::{format_number, format_size, row_tooltip_markup};
+
+const APP_ID: &str = "org.gtk_rs.SmartShreds";
 
 glib::wrapper! {
     pub struct SmartShredsWindow(ObjectSubclass<imp::SmartShredsWindow>)
@@ -30,6 +33,54 @@ glib::wrapper! {
 impl SmartShredsWindow {
     pub fn new(app: &adw::Application) -> Self {
         Object::builder().property("application", app).build()
+    }
+
+    fn setup_settings(&self) {
+        let settings = Settings::new(APP_ID);
+        self.imp()
+            .settings
+            .set(settings)
+            .expect("`settings` should not be set before calling `setup_settings`.");
+    }
+
+    fn settings(&self) -> &Settings {
+        self.imp()
+            .settings
+            .get()
+            .expect("`settings` should be set in `setup_settings`.")
+    }
+
+    /// Check if the user is authenticated.
+    fn check_authentication(&self) {
+        let auth_settings = self.get_auth_settings();
+
+        // if the user is not authenticated, show the onboarding dialog
+        if auth_settings.is_authenticated { return }
+
+        let onboarding = OnBoarding::new();
+        if !auth_settings.first_time {
+            // take user to the login page if its not the first time
+            onboarding.imp().navigation_view.push_by_tag("login")
+        }
+
+        let dialog = AlertDialog::builder()
+            .heading("SmartShreds")
+            .extra_child(&onboarding)
+            .build();
+        dialog
+            .choose(self, Some(&Cancellable::new()), |_| {});
+    }
+
+    /// get auth settings
+    fn get_auth_settings(&self) -> AuthSettings {
+        AuthSettings {
+            token: self.settings().string("token").to_string(),
+            username: self.settings().string("username").to_string(),
+            email: self.settings().string("email").to_string(),
+            is_authenticated: self.settings().boolean("is-authenticated"),
+            client_id: self.settings().string("client-id").to_string(),
+            first_time: self.settings().boolean("first-time"),
+        }
     }
 
     /// Open the dialog box to show the scanning is in progress.
@@ -122,7 +173,6 @@ impl SmartShredsWindow {
                 }
             }
             // put a check to see if there are any duplicates
-
             self.imp().duplicates_vec.replace(
                 duplicates_map
                     .values()
