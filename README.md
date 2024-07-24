@@ -17,7 +17,8 @@ SmartShreds is a Rust-based desktop application designed to help educators and s
 
 
 ## State of Project
-![Screenshot 2024-07-17 at 10 38 04 PM](https://github.com/user-attachments/assets/90a15f34-fdec-4c13-a662-d0c41bdf5d51)
+![Screenshot 2024-07-24 at 12 24 32 AM](https://github.com/user-attachments/assets/5ae12a08-c45a-4a90-a3f2-d33ea3a224a1)
+This is where the categories will be for the user
 
 
 ## Installation
