@@ -2,28 +2,28 @@
 <schemalist>
   <schema id="org.gtk_rs.SmartShreds" path="/org/gtk_rs/SmartShreds/">
     <key name="first-time" type="b">
-      <default>false</default>
-      <summary>Is this the first time the user opening the app?</summary>
+      <default>true</default>
+      <summary>First time user</summary>
     </key>
     <key name="username" type="s">
-      <default>"Username"</default>
-      <summary>The username of the user.</summary>
+      <default>''</default>
+      <summary>The username of the user</summary>
     </key>
     <key name="email" type="s">
-      <default>"Email"</default>
-      <summary>The email of the user.</summary>
-    </key>
-    <key name="client-id" type="s">
-      <default>"ClientID"</default>
-      <summary>The device ID of the user.</summary>
+      <default>''</default>
+      <summary>The email of the user</summary>
     </key>
     <key name="token" type="s">
-      <default>"Token"</default>
-      <summary>The token of the user.</summary>
+      <default>''</default>
+      <summary>The token of the user</summary>
     </key>
     <key name="is-authenticated" type="b">
       <default>false</default>
-      <summary>Is the user authenticated?</summary>
+      <summary>Is the user authenticated</summary>
+    </key>
+    <key name="user-id" type="s">
+      <default>''</default>
+      <summary>User ID for the application</summary>
     </key>
   </schema>
 </schemalist>

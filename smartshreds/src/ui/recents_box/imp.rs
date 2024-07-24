@@ -4,9 +4,7 @@ use gtk::{CompositeTemplate, glib};
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/gtk_rs/SmartShreds/recents_box.ui")]
-pub struct RecentsBox {
-
-}
+pub struct RecentsBox {}
 
 #[glib::object_subclass]
 impl ObjectSubclass for RecentsBox {

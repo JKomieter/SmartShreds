@@ -6,20 +6,18 @@ use glib::clone;
 use glib::Object;
 use gtk::gio::{Cancellable, Settings};
 use gtk::{gio, glib, FileDialog, Label, ListBoxRow, Spinner};
-use sha2::{Digest, Sha256};
-use std::collections::HashMap;
-use std::fs::File;
-use std::io::Read;
 use std::path::PathBuf;
 
-use crate::types::{AuthSettings, DupFile};
+use crate::types::{AuthResponse, AuthSettings, Category, DupFile};
+use crate::ui::category_box::CategoryBox;
 use crate::ui::dup_file_object::DupFileObject;
 use crate::ui::dup_file_row::DupFileRow;
 use crate::ui::file_type_box::FileTypeBox;
-use crate::ui::onboarding::OnBoarding;
 use crate::ui::recents_box::RecentsBox;
 use crate::utils::analysis::StorageAnalysis;
-use crate::utils::{format_number, format_size, row_tooltip_markup};
+use crate::utils::{
+    format_number, format_size, row_tooltip_markup, traverse_directory_for_duplicates,
+};
 
 const APP_ID: &str = "org.gtk_rs.SmartShreds";
 
@@ -33,6 +31,11 @@ glib::wrapper! {
 impl SmartShredsWindow {
     pub fn new(app: &adw::Application) -> Self {
         Object::builder().property("application", app).build()
+    }
+
+    fn setup(&self) {
+        self.display_filetype_analysis();
+        self.setup_categories();
     }
 
     fn setup_settings(&self) {
@@ -53,22 +56,16 @@ impl SmartShredsWindow {
     /// Check if the user is authenticated.
     fn check_authentication(&self) {
         let auth_settings = self.get_auth_settings();
-
         // if the user is not authenticated, show the onboarding dialog
-        if auth_settings.is_authenticated { return }
-
-        let onboarding = OnBoarding::new();
-        if !auth_settings.first_time {
-            // take user to the login page if its not the first time
-            onboarding.imp().navigation_view.push_by_tag("login")
+        if auth_settings.is_authenticated {
+        } else {
+            self.unauthenticated();
         }
+    }
 
-        let dialog = AlertDialog::builder()
-            .heading("SmartShreds")
-            .extra_child(&onboarding)
-            .build();
-        dialog
-            .choose(self, Some(&Cancellable::new()), |_| {});
+    /// show the onboarding dialog
+    fn unauthenticated(&self) {
+        self.imp().stack.set_visible_child_name("auth");
     }
 
     /// get auth settings
@@ -78,8 +75,8 @@ impl SmartShredsWindow {
             username: self.settings().string("username").to_string(),
             email: self.settings().string("email").to_string(),
             is_authenticated: self.settings().boolean("is-authenticated"),
-            client_id: self.settings().string("client-id").to_string(),
             first_time: self.settings().boolean("first-time"),
+            user_id: self.settings().string("user-id").to_string(),
         }
     }
 
@@ -139,39 +136,7 @@ impl SmartShredsWindow {
             return;
         } else if response == start_response {
             spinner.start();
-            let mut dir_queue: Vec<PathBuf> = vec![path.to_path_buf()];
-            let mut duplicates_map: HashMap<String, Vec<DupFile>> = HashMap::new();
-            let mut hasher = Sha256::new();
-            // scan the directory
-            while let Some(dir) = dir_queue.pop() {
-                for entry in std::fs::read_dir(&dir).expect("Error reading directory") {
-                    let entry = entry.expect("Error reading entry");
-                    let path = entry.path();
-                    if path.is_dir() {
-                        dir_queue.push(path);
-                    } else {
-                        let mut file = File::open(&path).expect("Error opening file");
-                        let dup_file = DupFile {
-                            file_path: path.clone(),
-                            file_name: path
-                                .file_name()
-                                .expect("Error getting file name")
-                                .to_string_lossy()
-                                .to_string(),
-                            file_size: file.metadata().expect("Error getting metadata").len(),
-                        };
-                        let mut contents = Vec::new();
-                        file.read_to_end(&mut contents).expect("Error reading file");
-                        hasher.update(&contents);
-                        let result = hasher.finalize_reset();
-                        let hash = format!("{:x}", result);
-                        duplicates_map
-                            .entry(hash)
-                            .or_insert_with(Vec::new)
-                            .push(dup_file);
-                    }
-                }
-            }
+            let duplicates_map = traverse_directory_for_duplicates(path.to_path_buf());
             // put a check to see if there are any duplicates
             self.imp().duplicates_vec.replace(
                 duplicates_map
@@ -276,7 +241,7 @@ impl SmartShredsWindow {
         }
     }
 
-    fn display_analysis(&self) {
+    fn display_filetype_analysis(&self) {
         let mut names_for_background = vec![
             "faint-red",
             "faint-blue",
@@ -323,6 +288,70 @@ impl SmartShredsWindow {
                 .card_icon
                 .set_from_file(Some(file_type.get_image_icon()));
             self.imp().file_type_boxes.append(&file_type_box);
+        }
+    }
+
+    fn save_auth_response_data(&self, auth_response: AuthResponse) {
+        self.settings()
+            .set_string("token", &auth_response.token)
+            .expect("Error setting token");
+        self.settings()
+            .set_string("user-id", &auth_response.user_id)
+            .expect("Error setting user-id");
+        self.settings()
+            .set_boolean("is-authenticated", true)
+            .expect("Error setting is-authenticated");
+        self.settings()
+            .set_boolean("first-time", false)
+            .expect("Error setting first-time");
+        self.settings()
+            .set_string("username", self.imp().signup_username.text().as_str())
+            .expect("Error setting username");
+        self.settings()
+            .set_string("email", self.imp().signup_email.text().as_str())
+            .expect("Error setting email");
+    }
+
+    /// Setup the categories
+    fn setup_categories(&self) {
+        self.imp().main_navigation_view.connect_pushed(clone!(
+            #[weak(rename_to = window)]
+            self,
+            move |_| {
+                let curent_page = window
+                    .imp()
+                    .main_navigation_view
+                    .visible_page()
+                    .expect("No page found");
+                let current_page_tag = curent_page.tag().expect("No tag found");
+                if current_page_tag == "categories" {
+                    window.display_categories();
+                }
+            }
+        ));
+    }
+
+    /// Display the categories
+    fn display_categories(&self) {
+        let mut css_names = vec![
+            "assignments",
+            "projects",
+            "notes",
+            "exams",
+            "study-materials",
+            "research-papers",
+            "personal-notes",
+            "class-schedules",
+            "extra-curricular-activities",
+        ]
+        .into_iter();
+
+        // let categories = Category::VALUES;
+        self.imp().categories_flowbox.remove_all();
+        for _ in 0..9 {
+            let category_box = CategoryBox::new();
+            category_box.set_property("name", css_names.next().expect("No more names"));
+            self.imp().categories_flowbox.append(&category_box);
         }
     }
 }

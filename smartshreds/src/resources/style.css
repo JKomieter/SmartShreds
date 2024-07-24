@@ -82,3 +82,39 @@
     font-size: 4em;
     font-weight: bolder;
 }
+
+#assignments {
+    background-color: #FFA500;
+}
+
+#notes {
+    background-color: #008080;
+}
+
+#research-papers {
+    background-color: #4682B4;
+}
+
+#study-materials {
+    background-color: #9370DB;
+}
+
+#exams {
+    background-color: #FF6347;
+}
+
+#projects {
+    background-color: #32CD32;
+}
+
+#class-schedules {
+    background-color: #FFD700;
+}
+
+#extra-curricular-activities {
+    background-color: #FF69B4;
+}
+
+#personal-notes {
+    background-color: #ADD8E6;
+}
