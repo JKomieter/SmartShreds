@@ -1,7 +1,6 @@
 mod window;
 mod utils;
 mod errors;
-mod types;
 mod ui;
 
 use gtk::{gdk::Display, gio, glib, CssProvider};

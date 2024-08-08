@@ -11,10 +11,7 @@ use std::{
     collections::HashMap,
 };
 
-use crate::{
-    types::{AuthResponse, DupFile},
-    utils::runtime,
-};
+use crate::utils::{runtime, DupFile, auth::AuthResponse,};
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/gtk_rs/SmartShreds/window.ui")]
@@ -62,9 +59,8 @@ pub struct SmartShredsWindow {
     #[template_child]
     pub signup_confirm_password: TemplateChild<gtk::PasswordEntry>,
 
-    // categories page
-    #[template_child]
-    pub categories_flowbox: TemplateChild<gtk::FlowBox>,
+    // recents page
+    
 }
 
 #[glib::object_subclass]
@@ -89,10 +85,10 @@ impl ObjectImpl for SmartShredsWindow {
         let obj = self.obj();
         obj.setup_settings();
         // check if user is logged in.
-        obj.check_authentication();
-        if !obj.settings().boolean("is-authenticated") {
-            return;
-        }
+        // obj.check_authentication();
+        // if !obj.settings().boolean("is-authenticated") {
+        //     return;
+        // }
         obj.setup();
     }
 }
@@ -140,7 +136,7 @@ impl SmartShredsWindow {
         let tag = match index {
             1 => "home",
             2 => "categories",
-            4 => "find-duplicates",
+            4 => "duplicates",
             _ => "home",
         };
         self.main_navigation_view.pop();

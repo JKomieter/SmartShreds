@@ -213,6 +213,26 @@ impl StorageAnalysis {
         (created, accessed, modified)
     }
 
+    pub fn is_irrelevant_file(&self, path: &PathBuf) -> bool {
+        let irrelevant_file_types = vec![
+            // Windows
+            "exe", "dll", "tmp", "log", "bak", "old", "chk", "swp", "temp", "thumbs.db", "desktop.ini",
+            "lnk", "url", "ini", "db", "dbf", "mdb", "accdb", "sql", "mdf", "ldf", "sdf", "sqlite",
+            "sqlite3",
+            // MacOS
+            "dmg", "pkg", "app", "ipa", "iso", "toast", "dmgpart", "sparseimage", "appex", "xip",
+            "pkg", "mpkg", "prefPane", "qlgenerator", "saver", "mdimporter", "workflow", "cpgz",
+            "usr", "xar", "xip", "z", "zip", "gz", "tar", "tgz", "tbz", "bz2", "xz", "lz", "lzma",
+            // Linux
+            "deb", "rpm", "AppImage", "snap", "run", "sh", "bin", "out",
+            "o", "a", "so", "ko", "la", "lai", "lo", "po", "mo", "pot", "class", "jar", "war", "ear",
+        ];
+
+        return irrelevant_file_types.into_iter().any(|irr| {
+            path.to_str().unwrap().contains(irr)
+        });
+    }
+
     fn detect_junk_files(&mut self) {}
 
     pub fn recent_files(&self) {}
@@ -232,4 +252,23 @@ mod test {
 
         println!("{:#?}", analysis);
     }
+
+    #[test]
+    pub fn text_irrelevant_files() {
+        let file_paths = [
+            "/home/user/Downloads/file.exe",
+            "/home/user/Downloads/file.dmg",
+            "/home/user/Downloads/file.deb",
+            "/home/user/Downloads/file.txt",
+            "'usr/local/bin/file.sh",
+            "'home/user/Downloads/file.gz",
+        ];
+
+        let analysis = StorageAnalysis::new();
+        for path in file_paths.iter() {
+            let path = PathBuf::from(path);
+            assert!(analysis.is_irrelevant_file(&path));
+        }
+    }
+
 }

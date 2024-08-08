@@ -8,15 +8,16 @@ use gtk::gio::{Cancellable, Settings};
 use gtk::{gio, glib, FileDialog, Label, ListBoxRow, Spinner};
 use std::path::PathBuf;
 
-use crate::types::{AuthResponse, AuthSettings, Category, DupFile};
-use crate::ui::category_box::CategoryBox;
 use crate::ui::dup_file_object::DupFileObject;
 use crate::ui::dup_file_row::DupFileRow;
 use crate::ui::file_type_box::FileTypeBox;
 use crate::ui::recents_box::RecentsBox;
-use crate::utils::analysis::StorageAnalysis;
 use crate::utils::{
-    format_number, format_size, row_tooltip_markup, traverse_directory_for_duplicates,
+    analysis::StorageAnalysis,
+    auth::{AuthResponse, AuthSettings},
+};
+use crate::utils::{
+    format_number, format_size, row_tooltip_markup, traverse_directory_for_duplicates, DupFile,
 };
 
 const APP_ID: &str = "org.gtk_rs.SmartShreds";
@@ -35,7 +36,6 @@ impl SmartShredsWindow {
 
     fn setup(&self) {
         self.display_filetype_analysis();
-        self.setup_categories();
     }
 
     fn setup_settings(&self) {
@@ -310,48 +310,5 @@ impl SmartShredsWindow {
         self.settings()
             .set_string("email", self.imp().signup_email.text().as_str())
             .expect("Error setting email");
-    }
-
-    /// Setup the categories
-    fn setup_categories(&self) {
-        self.imp().main_navigation_view.connect_pushed(clone!(
-            #[weak(rename_to = window)]
-            self,
-            move |_| {
-                let curent_page = window
-                    .imp()
-                    .main_navigation_view
-                    .visible_page()
-                    .expect("No page found");
-                let current_page_tag = curent_page.tag().expect("No tag found");
-                if current_page_tag == "categories" {
-                    window.display_categories();
-                }
-            }
-        ));
-    }
-
-    /// Display the categories
-    fn display_categories(&self) {
-        let mut css_names = vec![
-            "assignments",
-            "projects",
-            "notes",
-            "exams",
-            "study-materials",
-            "research-papers",
-            "personal-notes",
-            "class-schedules",
-            "extra-curricular-activities",
-        ]
-        .into_iter();
-
-        // let categories = Category::VALUES;
-        self.imp().categories_flowbox.remove_all();
-        for _ in 0..9 {
-            let category_box = CategoryBox::new();
-            category_box.set_property("name", css_names.next().expect("No more names"));
-            self.imp().categories_flowbox.append(&category_box);
-        }
     }
 }

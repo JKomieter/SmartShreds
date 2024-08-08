@@ -50,27 +50,27 @@
 
 
 #faint-red {
-    background-color: #fbd9d3;
+    background-color: #FF6347;
     padding: 1em;
 }
 
 #faint-green {
-    background-color: #d3fbd3;
+    background-color: #008080;
     padding: 1em;
 }
 
 #faint-blue {
-    background-color: #d3e4fb;
+    background-color: #4682B4;
     padding: 1em;
 }
 
 #faint-yellow {
-    background-color: #fbfbd3;
+    background-color: #FFA500;
     padding: 1em;
 }
 
 #faint-purple {
-    background-color: #fbd3fb;
+    background-color: #9370DB;
     padding: 1em;
 }
 
@@ -118,3 +118,4 @@
 #personal-notes {
     background-color: #ADD8E6;
 }
+

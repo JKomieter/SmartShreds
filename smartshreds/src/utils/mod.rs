@@ -1,4 +1,6 @@
 pub mod analysis;
+pub mod recents;
+pub mod auth;
 
 use chrono::prelude::*;
 use sha2::{Digest, Sha256};
@@ -10,7 +12,13 @@ use std::rc::Rc;
 use std::sync::OnceLock;
 use tokio::runtime::Runtime;
 
-use crate::types::DupFile;
+
+#[derive(Debug, Clone)]
+pub struct DupFile {
+    pub file_path: PathBuf,
+    pub file_name: String,
+    pub file_size: u64,
+}
 
 /// Get the size of a file
 #[inline]

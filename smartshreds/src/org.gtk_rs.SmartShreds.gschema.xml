@@ -2,7 +2,7 @@
 <schemalist>
   <schema id="org.gtk_rs.SmartShreds" path="/org/gtk_rs/SmartShreds/">
     <key name="first-time" type="b">
-      <default>true</default>
+      <default>false</default>
       <summary>First time user</summary>
     </key>
     <key name="username" type="s">
@@ -18,7 +18,7 @@
       <summary>The token of the user</summary>
     </key>
     <key name="is-authenticated" type="b">
-      <default>false</default>
+      <default>true</default>
       <summary>Is the user authenticated</summary>
     </key>
     <key name="user-id" type="s">
