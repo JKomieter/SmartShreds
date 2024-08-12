@@ -356,133 +356,157 @@
                                                 </property>
                                             </object>
                                         </child>
-                                        <!-- Home Page -->
-                                         
-                                        <!-- Find Duplicates Page-->
+                                        <!-- End of Home Page -->
+                                        <!-- Duplicates page -->
                                         <child>
                                             <object class="AdwNavigationPage">
-                                                <property name="title" translatable="yes">Find duplicates</property>
+                                                <property name="title" translatable="yes">Duplicate file finder</property>
                                                 <property name="tag">duplicates</property>
-                                                <property name="child">
-                                                    <object class="AdwToolbarView">
-                                                        <child type="top">
-                                                            <object class="AdwHeaderBar"/>
-                                                        </child>
-                                                        <child>
-                                                            <object class="GtkBox">
-                                                                <property name="orientation">vertical</property>
-                                                                <style>
-                                                                    <class name="spacer"/>
-                                                                </style>
-                                                                <!-- Header -->
-                                                                <child>
-                                                                    <object class="GtkCenterBox">
-                                                                        <property name="orientation">horizontal</property>
-                                                                        <property name="name">header-row</property>
-                                                                        <child type="start">
-                                                                            <object class="GtkLabel">
-                                                                                <property name="label" translatable="yes">Duplicate file detection</property>
-                                                                                <property name="name">header-title</property>
-                                                                            </object>
-                                                                        </child>
-                                                                        <child type="end">
-                                                                            <object class="GtkBox">
-                                                                                <property name="orientation">horizontal</property>
-                                                                                <child>
-                                                                                    <object class="GtkSearchEntry" id="entry">
-                                                                                        <property name="margin-end">10</property>
-                                                                                        <property name="placeholder-text" translatable="yes">Search files...</property>
-                                                                                        <property name="name">entry</property>
-                                                                                        <property name="width-request">200</property>
-                                                                                    </object>
-                                                                                </child>
-                                                                                <child>
-                                                                                    <object class="GtkButton">
-                                                                                        <property name="label" translatable="yes">Select directory</property>
-                                                                                        <signal name="clicked" handler="on_select_directory_clicked" swapped="true"/>
-                                                                                        <style>
-                                                                                            <class name="accent"/>
-                                                                                        </style>
-                                                                                    </object>
-                                                                                </child>
-                                                                            </object>
-                                                                        </child>
-                                                                    </object>
-                                                                </child>
-                                                                <!-- Header -->
-                                                                <!-- Duplicatee files box -->
-                                                                <child>
-                                                                    <object class="GtkBox">
-                                                                        <property name="orientation">vertical</property>
-                                                                        <property name="margin-top">20</property>
-                                                                        <property name="margin-bottom">20</property>
-                                                                        <property name="margin-start">20</property>
-                                                                        <property name="margin-end">20</property>
-                                                                        <property name="name">output-box</property>
-                                                                        <property name="height-request">700</property>
-                                                                        <!-- Head -->
+                                                <property name="vexpand">true</property>
+                                                <property name="hexpand">true</property>
+                                                    <property name="child">
+                                                        <object class="AdwToolbarView">
+                                                            <child type="top">
+                                                                <object class="AdwHeaderBar" />
+                                                            </child>
+                                                            <child>
+                                                                <object class="GtkBox">
+                                                                    <property name="orientation">vertical</property>
+                                                                    <property name="vexpand">true</property>
+                                                                    <property name="hexpand">true</property>
+                                                                        <!-- Header 1 -->
                                                                         <child>
                                                                             <object class="GtkCenterBox">
+                                                                                <property name="orientation">horizontal</property>
+                                                                                <property name="name">header-row</property>
                                                                                 <child type="start">
-                                                                                    <object class="GtkBox">
-                                                                                        <property name="orientation">vertical</property>
-                                                                                        <property name="margin-bottom">20</property>
-                                                                                        <child>
-                                                                                            <object class="GtkLabel">
-                                                                                                <property name="label" translatable="yes">Select duplicates to delete</property>
-                                                                                                <property name="halign">start</property>
-                                                                                                <property name="margin-bottom">7</property>
-                                                                                                <style>
-                                                                                                    <class name="title-1"/>
-                                                                                                </style>
-                                                                                            </object>
-                                                                                        </child>
-                                                                                        <child>
-                                                                                            <object class="GtkLabel">
-                                                                                                <property name="label" translatable="yes">Review and manage duplicate files found on your system.</property>
-                                                                                                <style>
-                                                                                                    <class name="body"/>
-                                                                                                    <class name="dim-label"/>
-                                                                                                </style>
-                                                                                            </object>
-                                                                                        </child>
+                                                                                    <object class="GtkSearchEntry">
+                                                                                        <property name="placeholder-text" translatable="yes">Search files...</property>
+                                                                                        <property name="name">entry</property>
+                                                                                        <property name="width-request">280</property>
+                                                                                        <property name="vexpand">true</property>
                                                                                     </object>
                                                                                 </child>
                                                                                 <child type="end">
-                                                                                    <object class="GtkLabel" id="filesize">
-                                                                                        <style>
-                                                                                            <class name="monospace"/>
-                                                                                            <class name="warning"/>
-                                                                                        </style>
+                                                                                    <object class="GtkBox">
+                                                                                        <property name="orientation">horizontal</property>
+                                                                                        <property name="spacing">10</property>
+                                                                                        <child>
+                                                                                            <object class="GtkButton">
+                                                                                                <property name="label">Clean</property>
+                                                                                                <style>
+                                                                                                    <class name="error"/>
+                                                                                                </style>
+                                                                                            </object>
+                                                                                        </child>
+                                                                                        <child>
+                                                                                            <object class="GtkButton">
+                                                                                                <property name="label">Scan</property>
+                                                                                                <style>
+                                                                                                    <class
+                                                                                                        name="suggested-action" />
+                                                                                                </style>
+                                                                                            </object>
+                                                                                        </child>
                                                                                     </object>
                                                                                 </child>
                                                                             </object>
                                                                         </child>
-                                                                        <!-- End of Head -->
-                                                                        <!-- Actions -->
+                                                                        <!-- End of Header 1 -->
+                                                                        <!-- Header 2 -->
                                                                         <child>
                                                                             <object class="GtkCenterBox">
+                                                                                <property name="orientation">horizontal</property>
+                                                                                <property name="name">header-row</property>
                                                                                 <child type="start">
                                                                                     <object class="GtkBox">
                                                                                         <property name="orientation">horizontal</property>
+                                                                                        <property name="spacing">30</property>
                                                                                         <style>
-                                                                                            <class name="linked"/>
+                                                                                            <class name="linked" />
                                                                                         </style>
                                                                                         <child>
-                                                                                            <object class="GtkButton">
+                                                                                            <object class="GtkBox">
+                                                                                                <property name="orientation">horizontal</property>
+                                                                                                <property name="spacing">5</property>
                                                                                                 <child>
                                                                                                     <object class="GtkImage">
-                                                                                                        <property name="icon-name">object-rotate-left-symbolic</property>  
+                                                                                                        <property name="file">assets/icons/pie-chart.png</property>
+                                                                                                        <property name="icon-size">large</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkBox">
+                                                                                                        <property name="orientation">vertical</property>
+                                                                                                        <property name="spacing">5</property>
+                                                                                                        <child>
+                                                                                                            <object class="GtkLabel" id="files_scanned">
+                                                                                                                <property name="label" translatable="yes">2315</property>
+                                                                                                                <property name="halign">start</property>
+                                                                                                                <style>
+                                                                                                                    <class name="title-1"/>
+                                                                                                                </style>
+                                                                                                            </object>
+                                                                                                        </child>
+                                                                                                        <child>
+                                                                                                            <object class="GtkLabel">
+                                                                                                                <property name="label">Files Scanned</property>
+                                                                                                                <property name="halign">start</property>
+                                                                                                                <style>
+                                                                                                                    <class name="caption-heading"/>
+                                                                                                                </style>
+                                                                                                            </object>
+                                                                                                        </child>
                                                                                                     </object>
                                                                                                 </child>
                                                                                             </object>
                                                                                         </child>
                                                                                         <child>
-                                                                                            <object class="GtkButton">
-                                                                                                <signal name="clicked" handler="on_delete_clicked" swapped="true"/>
+                                                                                            <object class="GtkBox">
+                                                                                                <property name="orientation">vertical</property>
+                                                                                                <property name="spacing">5</property>
                                                                                                 <child>
-                                                                                                    <object class="GtkImage">
-                                                                                                        <property name="icon-name">user-trash-symbolic</property>  
+                                                                                                    <object class="GtkLabel" id="duplicates_count">
+                                                                                                        <property name="label" translatable="yes">1415</property>
+                                                                                                        <property name="halign">start</property>
+                                                                                                        <style>
+                                                                                                            <class name="title-1"/>
+                                                                                                            <class name="error"/>
+                                                                                                        </style>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkLabel">
+                                                                                                        <property name="label">Duplicates Found</property>
+                                                                                                        <property name="halign">start</property>
+                                                                                                        <style>
+                                                                                                            <class name="caption-heading"/>
+                                                                                                        </style>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                            </object>
+                                                                                        </child>
+                                                                                        <child>
+                                                                                            <object class="GtkBox">
+                                                                                                <property name="orientation">vertical</property>
+                                                                                                <property name="spacing">5</property>
+                                                                                                <child>
+                                                                                                    <object class="GtkLabel" id="duplicates_space_taken">
+                                                                                                        <property name="label" translatable="yes">37 MB</property>
+                                                                                                        <property name="halign">start</property>
+                                                                                                        <style>
+                                                                                                            <class name="title-1"/>
+                                                                                                            <class name="success"/>
+                                                                                                        </style>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkLabel">
+                                                                                                        <property name="label">Space Taken</property>
+                                                                                                        <property name="halign">start</property>
+                                                                                                        <style>
+                                                                                                            <class name="caption-heading"/>
+                                                                                                        </style>
                                                                                                     </object>
                                                                                                 </child>
                                                                                             </object>
@@ -491,128 +515,190 @@
                                                                                 </child>
                                                                                 <child type="end">
                                                                                     <object class="GtkBox">
+                                                                                        <property name="orientation">horizontal</property>
                                                                                         <style>
-                                                                                            <class name="linked"/>
+                                                                                            <class name="linked" />
                                                                                         </style>
                                                                                         <child>
                                                                                             <object class="GtkButton">
-                                                                                                <property name="label" translatable="yes">View file</property>
-                                                                                                <style>
-                                                                                                    <class name="accent"/>
-                                                                                                </style>
+                                                                                                <property name="label">Select All</property>
                                                                                             </object>
                                                                                         </child>
                                                                                         <child>
                                                                                             <object class="GtkButton">
-                                                                                                <signal name="clicked" handler="on_previous_clicked" swapped="true"/>
-                                                                                                <child>
-                                                                                                    <object class="GtkImage">
-                                                                                                        <property name="icon-name">go-previous-symbolic</property>  
-                                                                                                    </object>
-                                                                                                </child>
-                                                                                            </object>
-                                                                                        </child>
-                                                                                        <child>
-                                                                                            <object class="GtkLabel" id="pagination">
-                                                                                                <!-- Pagination -->
-                                                                                                <property name="margin-start">5</property>
-                                                                                                <property name="margin-end">5</property>
+                                                                                                <property name="label">Delete</property>
                                                                                             </object>
                                                                                         </child>
                                                                                         <child>
                                                                                             <object class="GtkButton">
-                                                                                                <signal name="clicked" handler="on_next_clicked" swapped="true"/>
-                                                                                                <child>
-                                                                                                    <object class="GtkImage">
-                                                                                                        <property name="icon-name">go-next-symbolic</property>  
-                                                                                                    </object>
-                                                                                                </child>
+                                                                                                <property name="label">Move</property>
+                                                                                            </object>
+                                                                                        </child>
+                                                                                        <child>
+                                                                                            <object class="GtkButton">
+                                                                                                <property name="label">Copy</property>
                                                                                             </object>
                                                                                         </child>
                                                                                     </object>
                                                                                 </child>
                                                                             </object>
                                                                         </child>
-                                                                        <!-- End of Actions -->
-                                                                        <!-- Table Head -->
+                                                                        <!-- End of Header 2 -->
+                                                                         <!-- Header 3 -->
                                                                         <child>
-                                                                            <object class="GtkCenterBox" id="table_head">
-                                                                                <style>
-                                                                                    <class name="success"/>
-                                                                                </style>
+                                                                            <object class="GtkCenterBox">
                                                                                 <property name="orientation">horizontal</property>
-                                                                                <property name="name">table-head</property>
+                                                                                <property name="name">header-row</property>
                                                                                 <child type="start">
-                                                                                    <object class="GtkLabel">
-                                                                                        <property name="label" translatable="yes">FILE NAME</property>
-                                                                                        <style>
-                                                                                            <class name="monospace"/>
-                                                                                        </style>
+                                                                                    <object class="GtkBox">
+                                                                                        <property name="orientation">horizontal</property>
+                                                                                        <property name="spacing">10</property>
+                                                                                        <child>
+                                                                                            <object class="GtkLabel">
+                                                                                                <property name="margin-end">20</property>
+                                                                                                <property name="label" translatable="yes">Filter</property>
+                                                                                            </object>
+                                                                                        </child>
+                                                                                        <child>
+                                                                                            <object class="GtkBox" id="duplicates_filter_box">
+                                                                                                <property name="orientation">horizontal</property>
+                                                                                                <style>
+                                                                                                    <class name="linked"/>
+                                                                                                </style>
+                                                                                                <child>
+                                                                                                    <object class="GtkButton">
+                                                                                                        <property name="label">All</property>
+                                                                                                        <signal name="clicked" handler="filter_duplicates" swapped="true"/>
+                                                                                                        <style>
+                                                                                                            <class name="suggested-action" />
+                                                                                                        </style>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkButton">
+                                                                                                        <signal name="clicked" handler="filter_duplicates" swapped="true"/>
+                                                                                                        <property name="label">Images</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkButton">
+                                                                                                        <signal name="clicked" handler="filter_duplicates" swapped="true"/>
+                                                                                                        <property name="label">Documents</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkButton">
+                                                                                                        <signal name="clicked" handler="filter_duplicates" swapped="true"/>
+                                                                                                        <property name="label">Videos</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkButton">
+                                                                                                        <signal name="clicked" handler="filter_duplicates" swapped="true"/>
+                                                                                                        <property name="label">Audio</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                            </object>
+                                                                                        </child>
                                                                                     </object>
                                                                                 </child>
                                                                                 <child type="end">
-                                                                                    <object class="GtkLabel">
-                                                                                        <property name="label" translatable="yes">FILE LOCATION</property>
+                                                                                    <object class="GtkButton">
+                                                                                        <property name="label">Hide Preview</property>
                                                                                         <style>
-                                                                                            <class name="monospace"/>
+                                                                                            <class name="flat"/>
                                                                                         </style>
                                                                                     </object>
                                                                                 </child>
                                                                             </object>
                                                                         </child>
-                                                                        <!-- End -->
-                                                                        <!--  duplicate files -->
+                                                                        <!-- End of Header 3 -->
+                                                                        <!-- Main Content -->
                                                                         <child>
-                                                                            <object class="GtkScrolledWindow">
-                                                                                <property name="margin-top">10</property>
-                                                                                <property name="width-request">900</property>
-                                                                                <property name="height-request">200</property>
+                                                                            <object class="GtkPaned">
                                                                                 <property name="vexpand">true</property>
                                                                                 <property name="hexpand">true</property>
+                                                                                <property name="orientation">horizontal</property>
+                                                                                <property name="wide-handle">true</property>
+                                                                                <!-- Left -->
                                                                                 <child>
-                                                                                    <object class="GtkListBox" id="listbox">
-                                                                                        <property name="selection-mode">none</property>
-                                                                                        <property name="width-request">900</property>
-                                                                                        <property name="height-request">200</property>
+                                                                                    <object class="GtkBox">
                                                                                         <property name="vexpand">true</property>
                                                                                         <property name="hexpand">true</property>
-                                                                                        <property name="selection-mode">multiple</property>
-                                                                                        <style>
-                                                                                            <class name="boxed-list"/>
-                                                                                        </style>
-                                                                                        <!-- DupFileRows go here -->
+                                                                                        <property name="orientation">vertical</property>
+                                                                                        <property name="width-request">600</property>
+                                                                                        <child>
+                                                                                            <object class="GtkBox">
+                                                                                                <property name="orientation">horizontal</property>
+                                                                                                <property name="name">header-row</property>
+                                                                                                <property name="spacing">15</property>
+                                                                                                <property name="vexpand">true</property>
+                                                                                                <property name="hexpand">false</property>
+                                                                                                <child>
+                                                                                                    <object class="GtkLabel">
+                                                                                                        <property name="xalign">0</property>
+                                                                                                        <property name="label" translatable="yes">Name</property>
+                                                                                                        <property name="width-request">250</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkLabel">
+                                                                                                        <property name="xalign">0</property>
+                                                                                                        <property name="label" translatable="yes">Size</property>
+                                                                                                        <property name="width-request">120</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child >
+                                                                                                    <object class="GtkLabel">
+                                                                                                        <property name="xalign">0</property>
+                                                                                                        <property name="width-request">120</property>
+                                                                                                        <property name="label" translatable="yes">Date</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                                <child>
+                                                                                                    <object class="GtkLabel">
+                                                                                                        <property name="xalign">0</property>
+                                                                                                        <property name="width-request">250</property>
+                                                                                                        <property name="label" translatable="yes">In Folder</property>
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                            </object>
+                                                                                        </child>
+                                                                                        <!-- Duplicate list -->
+                                                                                        <child>
+                                                                                            <object class="GtkScrolledWindow">
+                                                                                                <property name="vscrollbar-policy">always</property>
+                                                                                                <property name="hscrollbar-policy">always</property>
+                                                                                                <property name="height-request">500</property>
+                                                                                                <child>
+                                                                                                    <object class="GtkListView" id="duplicates_list">
+                                                                                                       
+                                                                                                    </object>
+                                                                                                </child>
+                                                                                            </object>
+                                                                                        </child>
+                                                                                        <!-- End of duplicate list -->
                                                                                     </object>
                                                                                 </child>
+                                                                                <!-- End of Left -->
+                                                                                <!-- Right -->
+                                                                                <child>
+                                                                                    <object class="GtkBox">
+                                                                                        <property name="vexpand">true</property>
+                                                                                        <property name="hexpand">true</property>
+                                                                                    </object>
+                                                                                </child>
+                                                                                <!-- End of Right -->
                                                                             </object>
                                                                         </child>
-                                                                        <!-- End  -->
+                                                                        <!-- End of Main COntent -->
                                                                     </object>
                                                                 </child>
-                                                            </object>
-                                                        </child>
-                                                    </object>
+                                                        </object>
                                                 </property>
                                             </object>
                                         </child>
-                                        <!-- Duplicate Details Page -->
-                                        <child>
-                                            <object class="AdwNavigationPage">
-                                                <property name="title" translatable="yes">Duplicate details</property>
-                                                <property name="child">
-                                                    <object class="AdwToolbarView">
-                                                        <child type="top">
-                                                            <object class="AdwHeaderBar"/>
-                                                        </child>
-                                                        <child>
-                                                            <object class="GtkBox">
-                                                                <property name="orientation">vertical</property>
-                                                            </object>
-                                                        </child>
-                                                    </object>
-                                                </property>
-                                            </object>
-                                        </child>
-                                        <!-- End -->
+                                        <!-- End of duplicates page -->
                                     </object>
                                 </child>
                                 </object>

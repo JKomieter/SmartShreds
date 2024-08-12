@@ -1,21 +1,18 @@
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{
-    self,
-    gio::Settings,
-    glib::{self, clone, subclass::InitializingObject},
-    Box, Button, CompositeTemplate, Label, ListBox, ListBoxRow, Stack,
+    self, gio::Settings, glib::{self, clone, subclass::InitializingObject}, Box, Button, CompositeTemplate, Label, ListBoxRow, Stack
 };
-use std::{
-    cell::{Cell, OnceCell, RefCell},
-    collections::HashMap,
-};
+use std::{cell::{RefCell, OnceCell}, collections::HashMap};
 
-use crate::utils::{runtime, DupFile, auth::AuthResponse,};
+use crate::utils::{auth::AuthResponse, duplicates::DuplicateFilterMode, runtime};
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/gtk_rs/SmartShreds/window.ui")]
 pub struct SmartShredsWindow {
+    #[template_child]
+    pub main_navigation_view: TemplateChild<adw::NavigationView>,
+
     // settings
     pub settings: OnceCell<Settings>,
     #[template_child]
@@ -27,19 +24,16 @@ pub struct SmartShredsWindow {
     #[template_child]
     pub recents_and_graph: TemplateChild<Box>,
 
-    // duplicate page.
+    // duplicates page
     #[template_child]
-    pub listbox: TemplateChild<ListBox>,
-    pub duplicates_vec: RefCell<Vec<Vec<DupFile>>>,
-    pub page_number: Cell<usize>,
+    pub files_scanned: TemplateChild<Label>,
     #[template_child]
-    pub pagination: TemplateChild<Label>,
+    pub duplicates_count: TemplateChild<Label>,
     #[template_child]
-    pub filesize: TemplateChild<Label>,
+    pub duplicates_space_taken: TemplateChild<Label>,
     #[template_child]
-    pub toastoverlay: TemplateChild<adw::ToastOverlay>,
-    #[template_child]
-    pub main_navigation_view: TemplateChild<adw::NavigationView>,
+    pub duplicates_filter_box: TemplateChild<Box>,
+    pub filter_modes: RefCell<Vec<DuplicateFilterMode>>,
 
     // onboarding page
     #[template_child]
@@ -58,9 +52,7 @@ pub struct SmartShredsWindow {
     pub signup_password: TemplateChild<gtk::PasswordEntry>,
     #[template_child]
     pub signup_confirm_password: TemplateChild<gtk::PasswordEntry>,
-
-    // recents page
-    
+    // recents
 }
 
 #[glib::object_subclass]
@@ -95,36 +87,26 @@ impl ObjectImpl for SmartShredsWindow {
 
 #[gtk::template_callbacks]
 impl SmartShredsWindow {
-    // the behaviour of the buttons in the pagination is weird here.
+    /// Filter the duplicates.
     #[template_callback]
-    fn on_next_clicked(&self, _button: &Button) {
-        if self.page_number.get() < self.duplicates_vec.borrow().len()
-            && self.duplicates_vec.borrow().len() > 0
-        {
-            self.page_number.set(self.page_number.get() + 1);
-            self.obj().present_duplicates();
-        }
-    }
-
-    #[template_callback]
-    fn on_previous_clicked(&self, _button: &Button) {
-        if self.page_number.get() > 1 && self.duplicates_vec.borrow().len() > 0 {
-            self.page_number.set(self.page_number.get() - 1);
-            self.obj().present_duplicates();
-        }
-    }
-
-    /// Delete the selected duplicate files.
-    #[template_callback]
-    fn on_delete_clicked(&self, _button: &Button) {
-        if self.duplicates_vec.borrow().len() > 0 {
-            glib::spawn_future_local(clone!(
-                #[weak(rename_to = window)]
-                self,
-                async move {
-                    window.obj().delete_duplicates().await;
-                }
-            ));
+    fn filter_duplicates(&self, button: &Button) {
+        let css_classes: Vec<String> = button
+            .css_classes()
+            .iter()
+            .map(|c| c.as_str().to_string())
+            .collect();
+        let label = button.label().expect("Button has no label").to_string();
+        let new_mode = DuplicateFilterMode::from(label.as_str());
+        let filter_modes = self.filter_modes.borrow();
+        if css_classes.contains(&"suggested-action".to_string()) {
+            // remove the filter mode.
+            let index = filter_modes.iter().position(|m| m == &new_mode).unwrap();
+            self.filter_modes.borrow_mut().remove(index);
+            button.remove_css_class("suggested-action");
+        } else {
+            // add the filter mode.
+            self.filter_modes.borrow_mut().push(new_mode);
+            button.add_css_class("suggested-action");
         }
     }
 
@@ -136,17 +118,11 @@ impl SmartShredsWindow {
         let tag = match index {
             1 => "home",
             2 => "categories",
-            4 => "duplicates",
+            3 => "duplicates",
             _ => "home",
         };
         self.main_navigation_view.pop();
         self.main_navigation_view.push_by_tag(tag);
-    }
-
-    /// The scan button is clicked.
-    #[template_callback]
-    async fn on_select_directory_clicked(&self, _button: &Button) {
-        self.obj().select_folder_to_scan().await;
     }
 
     #[template_callback]
