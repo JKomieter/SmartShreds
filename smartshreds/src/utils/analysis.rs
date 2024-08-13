@@ -124,19 +124,6 @@ impl StorageAnalysis {
         dir_queue.push_back(start_path.to_path_buf());
         let mut unpermitted_dirs: HashSet<PathBuf> = HashSet::new();
 
-        // let (sender, receiver) = async_channel::bounded(1);
-        // runtime().spawn(clone!(
-        //     #[strong]
-        //     sender,
-        //     async move {
-
-        //     }
-        // ));
-
-        // glib::spawn_future_local(async move {
-            
-        // });
-
         while let Some(dir) = dir_queue.pop_front() {
             let dir_parent = dir.parent().expect("Error getting parent directory");
             // skip directories that are not permitted
@@ -222,15 +209,17 @@ impl StorageAnalysis {
             // MacOS
             "dmg", "pkg", "app", "ipa", "iso", "toast", "dmgpart", "sparseimage", "appex", "xip",
             "pkg", "mpkg", "prefPane", "qlgenerator", "saver", "mdimporter", "workflow", "cpgz",
-            "usr", "xar", "xip", "z", "zip", "gz", "tar", "tgz", "tbz", "bz2", "xz", "lz", "lzma",
+            "usr", "xar", "xip", "z", "gz", "tar", "tgz", "tbz", "bz2", "xz", "lz", "lzma",
             // Linux
             "deb", "rpm", "AppImage", "snap", "run", "sh", "bin", "out",
             "o", "a", "so", "ko", "la", "lai", "lo", "po", "mo", "pot", "class", "jar", "war", "ear",
         ];
 
-        return irrelevant_file_types.into_iter().any(|irr| {
-            path.to_str().unwrap().contains(irr)
-        });
+        let file_extension = path
+            .extension()
+            .and_then(std::ffi::OsStr::to_str)
+            .unwrap_or("");
+        irrelevant_file_types.contains(&file_extension)
     }
 
     fn detect_junk_files(&mut self) {}

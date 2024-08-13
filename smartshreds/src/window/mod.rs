@@ -1,21 +1,23 @@
 mod imp;
 
-use adw::subclass::prelude::*;
 use adw::prelude::*;
+use adw::subclass::prelude::*;
 use glib::Object;
 use gtk::gio::Settings;
-use gtk::{gio, glib};
+use gtk::glib::clone;
+use gtk::{gio, glib, ListItem, MultiSelection, SignalListItemFactory};
 
+use crate::ui::duplicate::duplicate_object::DuplicateObject;
+use crate::ui::duplicate::duplicate_row::DuplicateRow;
 use crate::ui::file_type_box::FileTypeBox;
 use crate::ui::recents_box::RecentsBox;
+use crate::utils::duplicates::{traverse_directory_for_duplicates, DupFile, DuplicateFilterMode};
 use crate::utils::recents::watch;
 use crate::utils::{
     analysis::StorageAnalysis,
     auth::{AuthResponse, AuthSettings},
 };
-use crate::utils::{
-    format_number, format_size,
-};
+use crate::utils::{format_number, format_size};
 
 const APP_ID: &str = "org.gtk_rs.SmartShreds";
 
@@ -32,9 +34,12 @@ impl SmartShredsWindow {
     }
 
     fn setup(&self) {
-        self.display_filetype_analysis();
+        self.setup_filetype_analysis();
         self.listen_recents();
+
         self.setup_duplicates();
+        self.get_duplicates();
+        self.setup_factory();
     }
 
     fn setup_settings(&self) {
@@ -58,13 +63,8 @@ impl SmartShredsWindow {
         // if the user is not authenticated, show the onboarding dialog
         if auth_settings.is_authenticated {
         } else {
-            self.unauthenticated();
+            self.imp().stack.set_visible_child_name("auth");
         }
-    }
-
-    /// show the onboarding dialog
-    fn unauthenticated(&self) {
-        self.imp().stack.set_visible_child_name("auth");
     }
 
     /// get auth settings
@@ -79,7 +79,52 @@ impl SmartShredsWindow {
         }
     }
 
-    fn display_filetype_analysis(&self) {
+    fn setup_filetype_analysis(&self) {
+        let download_dir = dirs::download_dir().expect("No download directory");
+        let document_dir = dirs::document_dir().expect("No document directory");
+        let desktop_dir = dirs::desktop_dir().expect("No desktop directory");
+        let audio_dir = dirs::audio_dir().expect("No audio directory");
+        let video_dir = dirs::video_dir().expect("No video directory");
+
+        let dirs_vec = vec![
+            download_dir,
+            document_dir,
+            desktop_dir,
+            audio_dir,
+            video_dir,
+        ];
+
+        let (sender, receiver) = async_channel::unbounded();
+
+        gio::spawn_blocking(move || {
+            let mut combined_analysis = StorageAnalysis::new();
+            dirs_vec.iter().for_each(|dir| {
+                combined_analysis.analyse(&dir);
+            });
+            sender
+                .send_blocking(combined_analysis)
+                .expect("Error sending analysis");
+        });
+
+        glib::spawn_future_local(clone!(
+            #[weak(rename_to = window)]
+            self,
+            async move {
+                while let Ok(analysis) = receiver.recv().await {
+                    window.display_filetype_analysis(analysis);
+                }
+            }
+        ));
+    }
+
+    fn display_filetype_analysis(&self, analysis: StorageAnalysis) {
+        let recents_box = RecentsBox::new();
+        self.imp().recents_and_graph.append(&recents_box);
+
+        if analysis.file_types_info.is_empty() {
+            return;
+        }
+
         let mut names_for_background = vec![
             "faint-red",
             "faint-blue",
@@ -88,17 +133,6 @@ impl SmartShredsWindow {
             "faint-purple",
         ]
         .into_iter();
-
-        let mut analysis = StorageAnalysis::new();
-        let home_dir = dirs::download_dir().expect("No home directory");
-        analysis.analyse(&home_dir);
-
-        let recents_box = RecentsBox::new();
-        self.imp().recents_and_graph.append(&recents_box);
-
-        if analysis.file_types_info.is_empty() {
-            return;
-        }
 
         for (file_type, (size, count)) in analysis.file_types_info.iter() {
             let file_type_box = FileTypeBox::new();
@@ -156,20 +190,182 @@ impl SmartShredsWindow {
         let desktop_dir = dirs::desktop_dir().expect("No desktop directory");
         let audio_dir = dirs::audio_dir().expect("No audio directory");
         let video_dir = dirs::video_dir().expect("No video directory");
-        
-        let dirs_vec = vec![download_dir, document_dir, desktop_dir, audio_dir, video_dir];
 
-        // dirs_vec.iter().for_each(|dir| {
-        //     let dir = dir.clone();
-        //     
-        // });
+        let dirs_vec = vec![
+            download_dir,
+            document_dir,
+            desktop_dir,
+            audio_dir,
+            video_dir,
+        ];
 
-        // gio::spawn_blocking(move || {
-        //     watch(&dirs_vec[0]);
-        // });
+        gio::spawn_blocking(move || {
+            dirs_vec.iter().for_each(|dir| {
+                watch(dir);
+            });
+        });
+    }
+
+    fn duplicates(&self) -> gio::ListStore {
+        self.imp()
+            .duplicates
+            .borrow()
+            .clone()
+            .expect("Could not get duplicates.")
     }
 
     fn setup_duplicates(&self) {
-        
+        self.imp()
+            .filter_modes
+            .borrow_mut()
+            .push(DuplicateFilterMode::All);
+
+        let model = gio::ListStore::new::<DuplicateObject>();
+        self.imp().duplicates.replace(Some(model));
+        let selection_mode = MultiSelection::new(Some(self.duplicates()));
+        self.imp().duplicates_list.set_model(Some(&selection_mode));
+    }
+
+    fn get_duplicates(&self) {
+        let download_dir = dirs::download_dir().expect("No download directory");
+        let document_dir = dirs::document_dir().expect("No document directory");
+        let desktop_dir = dirs::desktop_dir().expect("No desktop directory");
+        let picture_dir = dirs::picture_dir().expect("No picture directory");
+        let audio_dir = dirs::audio_dir().expect("No audio directory");
+        let video_dir = dirs::video_dir().expect("No video directory");
+
+        let dirs_vec = vec![
+            download_dir,
+            document_dir,
+            desktop_dir,
+            picture_dir,
+            audio_dir,
+            video_dir,
+        ];
+
+        let (sender, receiver) = async_channel::unbounded();
+
+        gio::spawn_blocking(move || {
+            dirs_vec.iter().for_each(|dir| {
+                let (duplicates_map, total_file_count, duplicates_size, duplicates_count) =
+                    traverse_directory_for_duplicates(dir.clone());
+                sender
+                    .send_blocking((
+                        duplicates_map,
+                        total_file_count,
+                        duplicates_size,
+                        duplicates_count,
+                    ))
+                    .expect("Error sending duplicates map");
+            });
+        });
+
+        glib::spawn_future_local(clone!(
+            #[weak(rename_to = window)]
+            self,
+            async move {
+                while let Ok((
+                    duplicates_map,
+                    total_file_count,
+                    duplicates_size,
+                    duplicates_count,
+                )) = receiver.recv().await
+                {
+                    window.imp().files_scanned.set_label(&format_number(
+                        total_file_count
+                            + window
+                                .imp()
+                                .files_scanned
+                                .label()
+                                .as_str()
+                                .parse::<u64>()
+                                .unwrap()
+                    ));
+                    window.imp().duplicates_count.set_label(&format_number(
+                        duplicates_count
+                            + window
+                                .imp()
+                                .duplicates_count
+                                .label()
+                                .as_str()
+                                .parse::<u64>()
+                                .unwrap()
+                    ));
+                    
+                    // window.imp().duplicates_space_taken.set_label(&format_size(
+                    //     duplicates_size
+                    //         + window
+                    //             .imp()
+                    //             .duplicates_space_taken
+                    //             .label()
+                    //             .as_str()
+                    //             .parse::<u64>()
+                    //             .unwrap()
+                    // ));
+
+                    let mut toggle = false;
+                    duplicates_map.into_iter().for_each(|(_, dup_files)| {
+                        let bgcolor = if toggle {
+                            "blue-duplicate-row"
+                        } else {
+                            "normal-duplicate-row"
+                        };
+                        dup_files.into_iter().for_each(|dup_file| {
+                            window.add_duplicate_row(dup_file, bgcolor);
+                        });
+                        toggle = !toggle;
+                    });
+                }
+            }
+        ));
+    }
+
+    fn add_duplicate_row(&self, dup_file: DupFile, bgcolor: &str) {
+        let formated_size = format_size(dup_file.file_size);
+        let formatted_date = dup_file
+            .date_created
+            .format("%-m/%-d/%Y %-I:%M:%S %p")
+            .to_string();
+        let duplicate_object = DuplicateObject::new(
+            dup_file.file_name,
+            formated_size,
+            dup_file.file_path.to_string_lossy().to_string(),
+            formatted_date,
+            bgcolor.to_string(),
+        );
+
+        self.duplicates().append(&duplicate_object);
+    }
+
+    fn setup_factory(&self) {
+        let factory = SignalListItemFactory::new();
+
+        factory.connect_setup(move |_, list_item| {
+            let row = DuplicateRow::new();
+            list_item
+                .downcast_ref::<ListItem>()
+                .expect("Needs to be a `ListItem`.")
+                .set_child(Some(&row));
+        });
+
+        factory.connect_bind(move |_, list_item| {
+            let duplicate_object = list_item
+                .downcast_ref::<ListItem>()
+                .expect("Needs to be a `ListItem`.")
+                .item()
+                .and_downcast::<DuplicateObject>()
+                .expect("Needs to be a `DuplicateObject`.");
+
+            let duplicate_row = list_item
+                .downcast_ref::<ListItem>()
+                .expect("Needs to be a `ListItem`.")
+                .child()
+                .and_downcast::<DuplicateRow>()
+                .expect("Needs to be a `DuplicateRow`.");
+
+            duplicate_row.bind(&duplicate_object);
+        });
+
+        self.imp().duplicates_list.set_factory(Some(&factory));
     }
 }

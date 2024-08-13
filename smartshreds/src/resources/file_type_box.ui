@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
     <template class="FileTypeBox" parent="GtkBox">
+        <property name="hexpand">true</property>
+        <property name="vexpand">true</property>
         <property name="focusable">true</property>
         <property name="orientation">vertical</property>
         <property name="width-request">200</property>
         <property name="height-request">110</property>
         <property name="name">file_type_box</property>
-        <property name="hexpand">true</property>
-        <property name="vexpand">true</property>
         <property name="spacing">15</property>
         <property name="halign">start</property>
         <property name="valign">start</property>
@@ -58,7 +58,6 @@
                 <property name="halign">start</property>
                 <style>
                     <class name="heading"/>
-                    <class name="dim-label"/>
                 </style>
             </object>
         </child>

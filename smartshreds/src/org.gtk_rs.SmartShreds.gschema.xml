@@ -2,7 +2,7 @@
 <schemalist>
   <schema id="org.gtk_rs.SmartShreds" path="/org/gtk_rs/SmartShreds/">
     <key name="first-time" type="b">
-      <default>false</default>
+      <default>true</default>
       <summary>First time user</summary>
     </key>
     <key name="username" type="s">

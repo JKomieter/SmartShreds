@@ -1,9 +1,12 @@
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{
-    self, gio::Settings, glib::{self, clone, subclass::InitializingObject}, Box, Button, CompositeTemplate, Label, ListBoxRow, Stack
+    self, gio::{self, Settings}, glib::{self, clone, subclass::InitializingObject}, Box, Button, CompositeTemplate, Label, ListBoxRow, ListView, Stack
 };
-use std::{cell::{RefCell, OnceCell}, collections::HashMap};
+use std::{
+    cell::{OnceCell, RefCell},
+    collections::HashMap,
+};
 
 use crate::utils::{auth::AuthResponse, duplicates::DuplicateFilterMode, runtime};
 
@@ -34,6 +37,9 @@ pub struct SmartShredsWindow {
     #[template_child]
     pub duplicates_filter_box: TemplateChild<Box>,
     pub filter_modes: RefCell<Vec<DuplicateFilterMode>>,
+    #[template_child]
+    pub duplicates_list: TemplateChild<ListView>,
+    pub duplicates: RefCell<Option<gio::ListStore>>,
 
     // onboarding page
     #[template_child]
@@ -77,10 +83,10 @@ impl ObjectImpl for SmartShredsWindow {
         let obj = self.obj();
         obj.setup_settings();
         // check if user is logged in.
-        // obj.check_authentication();
-        // if !obj.settings().boolean("is-authenticated") {
-        //     return;
-        // }
+        obj.check_authentication();
+        if !obj.settings().boolean("is-authenticated") {
+            return;
+        }
         obj.setup();
     }
 }
@@ -97,17 +103,29 @@ impl SmartShredsWindow {
             .collect();
         let label = button.label().expect("Button has no label").to_string();
         let new_mode = DuplicateFilterMode::from(label.as_str());
-        let filter_modes = self.filter_modes.borrow();
+        let filter_modes = self.filter_modes.borrow().clone();
+
         if css_classes.contains(&"suggested-action".to_string()) {
-            // remove the filter mode.
-            let index = filter_modes.iter().position(|m| m == &new_mode).unwrap();
+            let index = filter_modes
+                .into_iter()
+                .position(|m| m == new_mode)
+                .expect("Mode not found");
             self.filter_modes.borrow_mut().remove(index);
             button.remove_css_class("suggested-action");
         } else {
-            // add the filter mode.
             self.filter_modes.borrow_mut().push(new_mode);
             button.add_css_class("suggested-action");
         }
+    }
+
+    #[template_callback]
+    fn toggle_preview(&self, button: &Button) {
+        let label = button.label().expect("Button has no label").to_string();
+        button.set_label(if label == "Show Preview" {
+            "Hide Preview"
+        } else {
+            "Show Preview"
+        });
     }
 
     /// The navigation row is clicked.
@@ -127,20 +145,6 @@ impl SmartShredsWindow {
 
     #[template_callback]
     fn handle_signup_clicked(&self) {
-        self.auth_navigation_view.push_by_tag("loading");
-
-        let role = match self.role.selected() {
-            0 => "Student",
-            1 => "Educator",
-            3 => "Researcher",
-            _ => "Other",
-        };
-        let feature = match self.feature.selected() {
-            0 => "File organization",
-            1 => "Duplicate detection",
-            2 => "Reducing clutter",
-            _ => "Other",
-        };
         let recv_notifications = self.recv_notifications.is_active();
         let username = self.signup_username.text().to_string();
         let email = self.signup_email.text().to_string();
@@ -155,6 +159,21 @@ impl SmartShredsWindow {
         {
             return;
         }
+
+        self.auth_navigation_view.push_by_tag("loading");
+
+        let role = match self.role.selected() {
+            0 => "Student",
+            1 => "Educator",
+            3 => "Researcher",
+            _ => "Other",
+        };
+        let feature = match self.feature.selected() {
+            0 => "File organization",
+            1 => "Duplicate detection",
+            2 => "Reducing clutter",
+            _ => "Other",
+        };
 
         const OS: &str = std::env::consts::OS;
 

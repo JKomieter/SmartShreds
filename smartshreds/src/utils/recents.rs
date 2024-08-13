@@ -172,8 +172,5 @@ pub fn watch(path: &Path) {
 
 #[cfg(test)]
 mod test {
-    use super::*;
-
-    #[test]
-    fn test_watch() {}
+    
 }

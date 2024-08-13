@@ -1,121 +1,145 @@
 #main-title {
-    font-size: 2em;
-    font-weight: bold;
+  font-size: 2em;
+  font-weight: bold;
 }
 
 #box-row {
-    padding: 1em;
+  padding: 1em;
 }
 
 #label-row {
-    padding-left: 1em;
+  padding-left: 1em;
 }
 
 #header-row {
-    padding: 1.2em;
-    border-top: 0.2px solid rgb(113, 112, 112);
-    border-bottom: 0.2px solid rgb(113, 112, 112);
+  padding: 1.2em;
+  border-top: 0.2px solid rgb(113, 112, 112);
+  border-bottom: 0.2px solid rgb(113, 112, 112);
 }
 
 #header-title {
-    font-size: 16px;
-    font-weight: 700;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 #entry {
-    outline: none;
-    border: 0.2px solid rgb(113, 112, 112);
-    border-radius: 10px;
-    font-size: 12px;
+  outline: none;
+  border: 0.2px solid rgb(113, 112, 112);
+  border-radius: 10px;
+  font-size: 12px;
 }
 #entry:hover {
-    border: 1px solid rgb(113, 112, 112);
+  border: 1px solid rgb(113, 112, 112);
 }
 
 #output-box {
-    padding: 1em;
-    border: 0.5px solid rgb(113, 112, 112);
-    border-radius: 5px;
-    font-size: 17px;
+  padding: 1em;
+  border: 0.5px solid rgb(113, 112, 112);
+  border-radius: 5px;
+  font-size: 17px;
 }
 
 #table-head {
-    padding: 1em;
-    border-bottom: 0.5px solid rgb(113, 112, 112);
+  padding: 1em;
+  border-bottom: 0.5px solid rgb(113, 112, 112);
 }
 
 #file-row-center-box {
-    padding: 1em;
+  padding: 1em;
 }
 
-
 #faint-red {
-    background-color: #FF6347;
-    padding: 1em;
+  background-color: #ff6347;
+  padding: 1em;
 }
 
 #faint-green {
-    background-color: #008080;
-    padding: 1em;
+  background-color: #008080;
+  padding: 1em;
 }
 
 #faint-blue {
-    background-color: #4682B4;
-    padding: 1em;
+  background-color: #4682b4;
+  padding: 1em;
 }
 
 #faint-yellow {
-    background-color: #FFA500;
-    padding: 1em;
+  background-color: #ffa500;
+  padding: 1em;
 }
 
 #faint-purple {
-    background-color: #9370DB;
-    padding: 1em;
+  background-color: #9370db;
+  padding: 1em;
 }
 
 #category-card {
-    padding: 1em;
-    border: 0.2px solid rgb(255, 255, 255);
+  padding: 1em;
+  border: 0.2px solid rgb(255, 255, 255);
 }
 #welcome-title {
-    font-size: 4em;
-    font-weight: bolder;
+  font-size: 4em;
+  font-weight: bolder;
 }
 
 #assignments {
-    background-color: #FFA500;
+  background-color: #ffa500;
 }
 
 #notes {
-    background-color: #008080;
+  background-color: #008080;
 }
 
 #research-papers {
-    background-color: #4682B4;
+  background-color: #4682b4;
 }
 
 #study-materials {
-    background-color: #9370DB;
+  background-color: #9370db;
 }
 
 #exams {
-    background-color: #FF6347;
+  background-color: #ff6347;
 }
 
 #projects {
-    background-color: #32CD32;
+  background-color: #32cd32;
 }
 
 #class-schedules {
-    background-color: #FFD700;
+  background-color: #ffd700;
 }
 
 #extra-curricular-activities {
-    background-color: #FF69B4;
+  background-color: #ff69b4;
 }
 
 #personal-notes {
-    background-color: #ADD8E6;
+  background-color: #add8e6;
 }
 
+#blue-duplicate-row {
+  padding: 0.5em 0;
+  border: 2px solid blue;
+  font-style: italic;
+}
+
+#blue-duplicate-row:hover {
+  border: 2px solid blue;
+  font-style: normal;
+  background-color: blue;
+  color: #fff;
+}
+
+#normal-duplicate-row {
+  padding: 0.5em 0;
+  border: 2px solid gray;
+  font-style: normal;
+}
+
+#normal-duplicate-row:hover {
+  border: 2px solid gray;
+  font-style: italic;
+  background-color: blue;
+  color: #fff;
+}

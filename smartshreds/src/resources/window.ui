@@ -441,7 +441,7 @@
                                                                                                         <property name="spacing">5</property>
                                                                                                         <child>
                                                                                                             <object class="GtkLabel" id="files_scanned">
-                                                                                                                <property name="label" translatable="yes">2315</property>
+                                                                                                                <property name="label" translatable="yes">0</property>
                                                                                                                 <property name="halign">start</property>
                                                                                                                 <style>
                                                                                                                     <class name="title-1"/>
@@ -467,7 +467,7 @@
                                                                                                 <property name="spacing">5</property>
                                                                                                 <child>
                                                                                                     <object class="GtkLabel" id="duplicates_count">
-                                                                                                        <property name="label" translatable="yes">1415</property>
+                                                                                                        <property name="label" translatable="yes">0</property>
                                                                                                         <property name="halign">start</property>
                                                                                                         <style>
                                                                                                             <class name="title-1"/>
@@ -492,7 +492,7 @@
                                                                                                 <property name="spacing">5</property>
                                                                                                 <child>
                                                                                                     <object class="GtkLabel" id="duplicates_space_taken">
-                                                                                                        <property name="label" translatable="yes">37 MB</property>
+                                                                                                        <property name="label" translatable="yes">0 MB</property>
                                                                                                         <property name="halign">start</property>
                                                                                                         <style>
                                                                                                             <class name="title-1"/>
@@ -604,6 +604,7 @@
                                                                                 </child>
                                                                                 <child type="end">
                                                                                     <object class="GtkButton">
+                                                                                        <signal name="clicked" handler="toggle_preview" swapped="true"/>
                                                                                         <property name="label">Hide Preview</property>
                                                                                         <style>
                                                                                             <class name="flat"/>
@@ -624,9 +625,7 @@
                                                                                 <child>
                                                                                     <object class="GtkBox">
                                                                                         <property name="vexpand">true</property>
-                                                                                        <property name="hexpand">true</property>
                                                                                         <property name="orientation">vertical</property>
-                                                                                        <property name="width-request">600</property>
                                                                                         <child>
                                                                                             <object class="GtkBox">
                                                                                                 <property name="orientation">horizontal</property>
@@ -669,10 +668,10 @@
                                                                                             <object class="GtkScrolledWindow">
                                                                                                 <property name="vscrollbar-policy">always</property>
                                                                                                 <property name="hscrollbar-policy">always</property>
-                                                                                                <property name="height-request">500</property>
+                                                                                                <property name="height-request">800</property>
                                                                                                 <child>
                                                                                                     <object class="GtkListView" id="duplicates_list">
-                                                                                                       
+                                                                                                       <!-- Duplicates List -->
                                                                                                     </object>
                                                                                                 </child>
                                                                                             </object>
