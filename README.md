@@ -1,6 +1,6 @@
 # SmartShreds 
 ### (in progress)
-SmartShreds is a Rust-based desktop application designed to help educators and students efficiently manage and organize their files. Leveraging AI capabilities, SmartShreds identifies and highlights relevant file paths, providing suggestions on file organization and storage optimization.
+SmartShreds is a Rust-based desktop application designed to help you efficiently manage and organize their files. Leveraging AI capabilities, SmartShreds identifies and highlights relevant file paths, providing suggestions on file organization and storage optimization.
 
 ## Future Key Features
 
@@ -15,9 +15,8 @@ SmartShreds is a Rust-based desktop application designed to help educators and s
 - OpenAI
 - NodeJS
 
-
-## State of Project
-![Screenshot 2024-07-24 at 12 24 32 AM](https://github.com/user-attachments/assets/5ae12a08-c45a-4a90-a3f2-d33ea3a224a1)
+### State of Project
+## ![Screenshot 2024-08-12 at 11 50 10 PM](https://github.com/user-attachments/assets/069012ef-dade-4ec0-9acd-05e31e461f1b)
 This is where the categories will be for the user
 
 
