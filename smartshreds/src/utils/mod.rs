@@ -2,6 +2,7 @@ pub mod analysis;
 pub mod recents;
 pub mod auth;
 pub mod duplicates;
+pub mod preview;
 
 use std::sync::OnceLock;
 use tokio::runtime::Runtime;

@@ -567,15 +567,6 @@
                                                                                                 </style>
                                                                                                 <child>
                                                                                                     <object class="GtkButton">
-                                                                                                        <property name="label">All</property>
-                                                                                                        <signal name="clicked" handler="filter_duplicates" swapped="true"/>
-                                                                                                        <style>
-                                                                                                            <class name="suggested-action" />
-                                                                                                        </style>
-                                                                                                    </object>
-                                                                                                </child>
-                                                                                                <child>
-                                                                                                    <object class="GtkButton">
                                                                                                         <signal name="clicked" handler="filter_duplicates" swapped="true"/>
                                                                                                         <property name="label">Images</property>
                                                                                                     </object>
@@ -595,7 +586,7 @@
                                                                                                 <child>
                                                                                                     <object class="GtkButton">
                                                                                                         <signal name="clicked" handler="filter_duplicates" swapped="true"/>
-                                                                                                        <property name="label">Audio</property>
+                                                                                                        <property name="label">Audios</property>
                                                                                                     </object>
                                                                                                 </child>
                                                                                             </object>
@@ -621,18 +612,21 @@
                                                                                 <property name="hexpand">true</property>
                                                                                 <property name="orientation">horizontal</property>
                                                                                 <property name="wide-handle">true</property>
+                                                                                <property name="height-request">400</property>
                                                                                 <!-- Left -->
                                                                                 <child>
                                                                                     <object class="GtkBox">
                                                                                         <property name="vexpand">true</property>
+                                                                                        <property name="hexpand">true</property>
                                                                                         <property name="orientation">vertical</property>
                                                                                         <child>
                                                                                             <object class="GtkBox">
                                                                                                 <property name="orientation">horizontal</property>
                                                                                                 <property name="name">header-row</property>
                                                                                                 <property name="spacing">15</property>
-                                                                                                <property name="vexpand">true</property>
-                                                                                                <property name="hexpand">false</property>
+                                                                                                <property name="vexpand">false</property>
+                                                                                                <property name="hexpand">true</property>
+                                                                                                <property name="width-request">-1</property>
                                                                                                 <child>
                                                                                                     <object class="GtkLabel">
                                                                                                         <property name="xalign">0</property>
@@ -668,9 +662,12 @@
                                                                                             <object class="GtkScrolledWindow">
                                                                                                 <property name="vscrollbar-policy">always</property>
                                                                                                 <property name="hscrollbar-policy">always</property>
-                                                                                                <property name="height-request">800</property>
+                                                                                                <property name="hexpand">true</property>
+                                                                                                <property name='vexpand'>true</property>
                                                                                                 <child>
                                                                                                     <object class="GtkListView" id="duplicates_list">
+                                                                                                        <property name="vexpand">true</property>
+                                                                                                        <property name="hexpand">true</property>
                                                                                                        <!-- Duplicates List -->
                                                                                                     </object>
                                                                                                 </child>
@@ -685,12 +682,31 @@
                                                                                     <object class="GtkBox">
                                                                                         <property name="vexpand">true</property>
                                                                                         <property name="hexpand">true</property>
+                                                                                        <child>
+                                                                                            <object class="GtkViewport" id="preview_viewport">
+                                                                                                <property name="vexpand">true</property>
+                                                                                                <property name="hexpand">true</property>
+                                                                                            </object>
+                                                                                        </child>
                                                                                     </object>
                                                                                 </child>
                                                                                 <!-- End of Right -->
                                                                             </object>
                                                                         </child>
                                                                         <!-- End of Main COntent -->
+                                                                         <child>
+                                                                            <object class="GtkCenterBox">
+                                                                                <property name="vexpand">false</property>
+                                                                                <property name="hexpand">true</property>
+                                                                                <property name="name">header-row</property>
+                                                                                <property name="height-request">-1</property>
+                                                                                <child type="start">
+                                                                                    <object class="GtkLabel" id="files_marked">
+                                                                                        <property name="label" translatable="yes">0 files selected, total size of 0 B</property>
+                                                                                    </object>
+                                                                                </child>
+                                                                            </object>
+                                                                         </child>
                                                                     </object>
                                                                 </child>
                                                         </object>

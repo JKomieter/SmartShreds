@@ -1,17 +1,23 @@
 mod imp;
 
+use std::collections::HashMap;
+use std::path::PathBuf;
+
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use glib::Object;
 use gtk::gio::Settings;
 use gtk::glib::clone;
-use gtk::{gio, glib, ListItem, MultiSelection, SignalListItemFactory};
+use gtk::{
+    gio, glib, CustomFilter, FilterListModel, ListItem, MultiSelection, SignalListItemFactory,
+};
 
-use crate::ui::duplicate::duplicate_object::DuplicateObject;
+use crate::ui::duplicate::duplicate_object::{self, DuplicateObject};
 use crate::ui::duplicate::duplicate_row::DuplicateRow;
 use crate::ui::file_type_box::FileTypeBox;
 use crate::ui::recents_box::RecentsBox;
 use crate::utils::duplicates::{traverse_directory_for_duplicates, DupFile, DuplicateFilterMode};
+use crate::utils::preview::Preview;
 use crate::utils::recents::watch;
 use crate::utils::{
     analysis::StorageAnalysis,
@@ -35,11 +41,13 @@ impl SmartShredsWindow {
 
     fn setup(&self) {
         self.setup_filetype_analysis();
+
         self.listen_recents();
 
         self.setup_duplicates();
         self.get_duplicates();
         self.setup_factory();
+        self.show_preview();
     }
 
     fn setup_settings(&self) {
@@ -215,14 +223,10 @@ impl SmartShredsWindow {
     }
 
     fn setup_duplicates(&self) {
-        self.imp()
-            .filter_modes
-            .borrow_mut()
-            .push(DuplicateFilterMode::All);
-
         let model = gio::ListStore::new::<DuplicateObject>();
         self.imp().duplicates.replace(Some(model));
-        let selection_mode = MultiSelection::new(Some(self.duplicates()));
+        let filter_model = FilterListModel::new(Some(self.duplicates()), self.filters());
+        let selection_mode = MultiSelection::new(Some(filter_model));
         self.imp().duplicates_list.set_model(Some(&selection_mode));
     }
 
@@ -236,28 +240,38 @@ impl SmartShredsWindow {
 
         let dirs_vec = vec![
             download_dir,
-            document_dir,
-            desktop_dir,
-            picture_dir,
-            audio_dir,
-            video_dir,
+            // document_dir,
+            // desktop_dir,
+            // picture_dir,
+            // audio_dir,
+            // video_dir,
         ];
 
         let (sender, receiver) = async_channel::unbounded();
 
         gio::spawn_blocking(move || {
+            let mut final_duplicates_map: HashMap<String, Vec<DupFile>> = HashMap::new();
+            let mut final_total_file_count = 0;
+            let mut final_duplicates_size = 0;
+            let mut final_duplicates_count = 0;
+
             dirs_vec.iter().for_each(|dir| {
                 let (duplicates_map, total_file_count, duplicates_size, duplicates_count) =
                     traverse_directory_for_duplicates(dir.clone());
-                sender
-                    .send_blocking((
-                        duplicates_map,
-                        total_file_count,
-                        duplicates_size,
-                        duplicates_count,
-                    ))
-                    .expect("Error sending duplicates map");
+                final_duplicates_map.extend(duplicates_map);
+                final_total_file_count += total_file_count;
+                final_duplicates_size += duplicates_size;
+                final_duplicates_count += duplicates_count;
             });
+
+            sender
+                .send_blocking((
+                    final_duplicates_map,
+                    final_total_file_count,
+                    final_duplicates_size,
+                    final_duplicates_count,
+                ))
+                .expect("Error sending duplicates");
         });
 
         glib::spawn_future_local(clone!(
@@ -271,37 +285,19 @@ impl SmartShredsWindow {
                     duplicates_count,
                 )) = receiver.recv().await
                 {
-                    window.imp().files_scanned.set_label(&format_number(
-                        total_file_count
-                            + window
-                                .imp()
-                                .files_scanned
-                                .label()
-                                .as_str()
-                                .parse::<u64>()
-                                .unwrap()
-                    ));
-                    window.imp().duplicates_count.set_label(&format_number(
-                        duplicates_count
-                            + window
-                                .imp()
-                                .duplicates_count
-                                .label()
-                                .as_str()
-                                .parse::<u64>()
-                                .unwrap()
-                    ));
-                    
-                    // window.imp().duplicates_space_taken.set_label(&format_size(
-                    //     duplicates_size
-                    //         + window
-                    //             .imp()
-                    //             .duplicates_space_taken
-                    //             .label()
-                    //             .as_str()
-                    //             .parse::<u64>()
-                    //             .unwrap()
-                    // ));
+                    window
+                        .imp()
+                        .files_scanned
+                        .set_label(&format_number(total_file_count));
+                    window
+                        .imp()
+                        .duplicates_count
+                        .set_label(&format_number(duplicates_count));
+
+                    window
+                        .imp()
+                        .duplicates_space_taken
+                        .set_label(&format_size(duplicates_size));
 
                     let mut toggle = false;
                     duplicates_map.into_iter().for_each(|(_, dup_files)| {
@@ -367,5 +363,85 @@ impl SmartShredsWindow {
         });
 
         self.imp().duplicates_list.set_factory(Some(&factory));
+    }
+
+    fn filters(&self) -> Option<CustomFilter> {
+        let filter_modes = self.imp().filter_modes.borrow().clone();
+
+        // if `filter_modes` is just empty, return `None`
+        if filter_modes.is_empty() {
+            return None;
+        }
+
+        let filter = CustomFilter::new(move |obj| {
+            let duplicate_object = obj
+                .downcast_ref::<DuplicateObject>()
+                .expect("Not a DuplicateObject");
+            let file_path: PathBuf = duplicate_object.path().into();
+            let file_extension = file_path
+                .extension()
+                .and_then(std::ffi::OsStr::to_str)
+                .unwrap_or("");
+            let duplicate_file_type = DuplicateFilterMode::from_extension(file_extension);
+
+            // only allow duplicates that are of the same type as those in the filter_modes
+            filter_modes.contains(&duplicate_file_type)
+        });
+
+        Some(filter)
+    }
+
+    fn apply_filters(&self) {
+        let filter_model = FilterListModel::new(Some(self.duplicates()), self.filters());
+        let selection_mode = MultiSelection::new(Some(filter_model));
+        self.imp().duplicates_list.set_model(Some(&selection_mode));
+
+        let duplicates_count = selection_mode.n_items();
+        self.imp()
+            .duplicates_count
+            .set_label(&format_number(duplicates_count.into()));
+
+        let duplicates = self.duplicates();
+        let mut size = 0;
+        let mut position = 0;
+
+        while let Some(item) = duplicates.item(position) {
+            let duplicate_object = item
+                .downcast_ref::<DuplicateObject>()
+                .expect("Not a DuplicateObject");
+            let duplicate_size = duplicate_object
+                .size()
+                .split(" ")
+                .next()
+                .unwrap_or("0")
+                .parse::<u64>()
+                .unwrap_or(0);
+            size += duplicate_size;
+            position += 1;
+        }
+        // Todo: Fix this
+        self.imp()
+            .duplicates_space_taken
+            .set_label(&format_size(size));
+    }
+
+    fn show_preview(&self) {
+        self.imp().duplicates_list.connect_activate(clone!(
+            #[weak(rename_to = window)]
+            self,
+            move |_, i| {
+                let duplicates = window.duplicates();
+                if let Some(item) = duplicates.item(i) {
+                    let duplicate_object = item
+                        .downcast_ref::<DuplicateObject>()
+                        .expect("Not a DuplicateObject");
+                    let path = duplicate_object.path();
+                    let preview = Preview::new(path.into());
+                    if let Some(widget) = preview.widget() {
+                        window.imp().preview_viewport.set_child(Some(&widget));
+                    }
+                }
+            }
+        ));
     }
 }

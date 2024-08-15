@@ -1,14 +1,19 @@
 use adw::prelude::*;
 use adw::subclass::prelude::*;
 use gtk::{
-    self, gio::{self, Settings}, glib::{self, clone, subclass::InitializingObject}, Box, Button, CompositeTemplate, Label, ListBoxRow, ListView, Stack
+    self,
+    gio::{self, Settings},
+    glib::{self, clone, subclass::InitializingObject},
+    Box, Button, CompositeTemplate, Label, ListBoxRow, ListView, Stack, Viewport,
 };
 use std::{
     cell::{OnceCell, RefCell},
     collections::HashMap,
 };
 
-use crate::utils::{auth::AuthResponse, duplicates::DuplicateFilterMode, runtime};
+use crate::utils::{
+    auth::AuthResponse, duplicates::DuplicateFilterMode, preview::Preview, runtime,
+};
 
 #[derive(CompositeTemplate, Default)]
 #[template(resource = "/org/gtk_rs/SmartShreds/window.ui")]
@@ -40,6 +45,11 @@ pub struct SmartShredsWindow {
     #[template_child]
     pub duplicates_list: TemplateChild<ListView>,
     pub duplicates: RefCell<Option<gio::ListStore>>,
+    #[template_child]
+    pub files_marked: TemplateChild<Label>,
+    #[template_child]
+    pub preview_viewport: TemplateChild<Viewport>,
+    pub preview: RefCell<Option<Preview>>,
 
     // onboarding page
     #[template_child]
@@ -113,17 +123,21 @@ impl SmartShredsWindow {
             self.filter_modes.borrow_mut().remove(index);
             button.remove_css_class("suggested-action");
         } else {
-            self.filter_modes.borrow_mut().push(new_mode);
+            self.filter_modes.borrow_mut().push(new_mode.clone());
             button.add_css_class("suggested-action");
         }
+
+        self.obj().apply_filters();
     }
 
     #[template_callback]
     fn toggle_preview(&self, button: &Button) {
         let label = button.label().expect("Button has no label").to_string();
         button.set_label(if label == "Show Preview" {
+            self.preview_viewport.set_visible(true);
             "Hide Preview"
         } else {
+            self.preview_viewport.set_visible(false);
             "Show Preview"
         });
     }
