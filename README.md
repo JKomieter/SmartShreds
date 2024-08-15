@@ -16,7 +16,7 @@ SmartShreds is a Rust-based desktop application designed to help you efficiently
 - NodeJS
 
 ### State of Project
-## ![Screenshot 2024-08-12 at 11 50 10 PM](https://github.com/user-attachments/assets/069012ef-dade-4ec0-9acd-05e31e461f1b)
+![Screenshot 2024-08-15 at 1 14 33 AM](https://github.com/user-attachments/assets/50ff1956-cd86-4ef2-9a85-641bf1bc486b)
 This is where the categories will be for the user
 
 
