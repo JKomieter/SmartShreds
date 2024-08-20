@@ -12,7 +12,7 @@ use gtk::{
     gio, glib, CustomFilter, FilterListModel, ListItem, MultiSelection, SignalListItemFactory,
 };
 
-use crate::ui::duplicate::duplicate_object::{self, DuplicateObject};
+use crate::ui::duplicate::duplicate_object::DuplicateObject;
 use crate::ui::duplicate::duplicate_row::DuplicateRow;
 use crate::ui::file_type_box::FileTypeBox;
 use crate::ui::recents_box::RecentsBox;
@@ -200,11 +200,11 @@ impl SmartShredsWindow {
         let video_dir = dirs::video_dir().expect("No video directory");
 
         let dirs_vec = vec![
-            download_dir,
             document_dir,
             desktop_dir,
             audio_dir,
             video_dir,
+            download_dir,
         ];
 
         gio::spawn_blocking(move || {
@@ -239,8 +239,8 @@ impl SmartShredsWindow {
         let video_dir = dirs::video_dir().expect("No video directory");
 
         let dirs_vec = vec![
-            download_dir,
             // document_dir,
+            download_dir,
             // desktop_dir,
             // picture_dir,
             // audio_dir,

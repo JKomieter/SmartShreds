@@ -21,6 +21,9 @@ async-channel = "2.3.1"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.1"
 notify-debouncer-full = "0.3.1"
+anyhow = "1.0.86"
+gdk-pixbuf = "0.20.1"
+librsvg = "2.58.3"
 
 [build-dependencies]
 glib-build-tools = "0.20.0"

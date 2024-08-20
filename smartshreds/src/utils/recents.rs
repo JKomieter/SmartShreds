@@ -16,8 +16,8 @@ pub enum Action {
     Create(String),
     Remove(String),
     Modify(String),
-    Move,
     Rename(String),
+    Move,
     Unknown,
 }
 

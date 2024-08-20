@@ -693,7 +693,7 @@
                                                                                 <!-- End of Right -->
                                                                             </object>
                                                                         </child>
-                                                                        <!-- End of Main COntent -->
+                                                                        <!-- End of Main Content -->
                                                                          <child>
                                                                             <object class="GtkCenterBox">
                                                                                 <property name="vexpand">false</property>
@@ -714,6 +714,31 @@
                                             </object>
                                         </child>
                                         <!-- End of duplicates page -->
+                                         <!-- Organize Page -->
+                                         <child>
+                                            <object class="AdwNavigationPage">
+                                                <property name="title" translatable="yes">Organize Files</property>
+                                                <property name="tag">organize</property>
+                                                <property name="vexpand">true</property>
+                                                <property name="hexpand">true</property>
+                                                <property name="child">
+                                                    <object class="AdwToolbarView">
+                                                        <child type="top">
+                                                            <object class="AdwHeaderBar" />
+                                                        </child>
+                                                        <child>
+                                                            <object class="GtkBox">
+                                                                <property name="orientation">vertical</property>
+                                                                <property name="vexpand">true</property>
+                                                                <property name="hexpand">true</property>
+                                                                <!-- Content -->
+                                                            </object>
+                                                        </child>
+                                                    </object>
+                                                </property>
+                                            </object>
+                                         </child>
+                                         <!-- End of Organize page -->
                                     </object>
                                 </child>
                                 </object>
