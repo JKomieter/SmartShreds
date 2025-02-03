@@ -151,6 +151,7 @@ impl SmartShredsWindow {
             1 => "home",
             2 => "categories",
             3 => "duplicates",
+            4 => "organize",
             _ => "home",
         };
         self.main_navigation_view.pop();
